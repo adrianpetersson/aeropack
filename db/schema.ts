@@ -5,6 +5,7 @@ import {
   integer,
   boolean,
   timestamp,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -39,18 +40,25 @@ export const packingListsRelations = relations(packingLists, ({ many }) => ({
 // -----------------------------------------------------------------------------
 // 3. List Items (The specific items in a bag)
 // -----------------------------------------------------------------------------
-export const listItems = pgTable("list_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  listId: uuid("list_id")
-    .references(() => packingLists.id, { onDelete: "cascade" }) // cascading delete is cleaner for MVP
-    .notNull(),
-  name: text("name").notNull(),
-  category: text("category").default("general").notNull(),
-  weightG: integer("weight_g").notNull(),
-  quantity: integer("quantity").default(1).notNull(),
-  isWorn: boolean("is_worn").default(false).notNull(), // The "Weight Shifter" logic
-  isEstimated: boolean("is_estimated").default(false).notNull(), // UI Feedback
-});
+export const listItems = pgTable(
+  "list_items",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    listId: uuid("list_id")
+      .references(() => packingLists.id, { onDelete: "cascade" }) // cascading delete is cleaner for MVP
+      .notNull(),
+    name: text("name").notNull(),
+    category: text("category").default("general").notNull(),
+    weightG: integer("weight_g").notNull(),
+    quantity: integer("quantity").default(1).notNull(),
+    isWorn: boolean("is_worn").default(false).notNull(), // The "Weight Shifter" logic
+    isEstimated: boolean("is_estimated").default(false).notNull(), // UI Feedback
+  },
+  (table) => [
+    // This ensures a user can't have two "Jeans" in the same "Berlin Trip"
+    uniqueIndex("name_list_unique").on(table.listId, table.name),
+  ]
+);
 
 export const listItemsRelations = relations(listItems, ({ one }) => ({
   packingList: one(packingLists, {

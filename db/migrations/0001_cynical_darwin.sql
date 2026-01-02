@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "name_list_unique" ON "list_items" USING btree ("list_id","name");
