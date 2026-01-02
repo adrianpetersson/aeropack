@@ -1,8 +1,7 @@
-import { eq } from "drizzle-orm";
-import { packingLists } from "@/db/schema";
-import { notFound } from "next/navigation";
 import TripDashboardClient from "@/components/TripDashboardClient";
-import { db } from "@/db/db";
+import { getQueryClient } from "@/lib/get-query-client";
+import { getPackingListsAction } from "@/actions/packing-lists";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function TripPage({
   params,
@@ -11,20 +10,18 @@ export default async function TripPage({
 }) {
   const { id } = await params;
 
-  const trip = await db.query.packingLists.findFirst({
-    where: eq(packingLists.id, id),
-    with: {
-      items: true, // This gets all the gear in the bag!
-    },
-  });
+  const queryClient = getQueryClient();
 
-  if (!trip) {
-    notFound();
-  }
+  await queryClient.prefetchQuery({
+    queryKey: ["trip", id],
+    queryFn: () => getPackingListsAction(id),
+  });
 
   return (
     <main className="max-w-4xl mx-auto p-6">
-      <TripDashboardClient initialTrip={trip} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <TripDashboardClient id={id} />
+      </HydrationBoundary>
     </main>
   );
 }

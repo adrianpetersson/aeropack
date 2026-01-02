@@ -1,24 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import { Header } from "./dashboard/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { PackingListWithItems } from "@/db/types";
 import { Progress } from "./ui/progress";
 import { ItemCard } from "./dashboard/ItemCard";
 import { gramsToKg } from "@/utils/format.utils";
 import { Searchbar } from "./dashboard/Searchbar/Searchbar";
+import { useQuery } from "@tanstack/react-query";
+import { getPackingListsAction } from "@/actions/packing-lists";
 
-interface TripDashboardClientProps {
-  initialTrip: PackingListWithItems;
-}
+export default function TripDashboardClient({ id }: { id: string }) {
+  const { data: trip } = useQuery({
+    queryKey: ["trip", id],
+    queryFn: () => getPackingListsAction(id),
+  });
 
-export default function TripDashboardClient({
-  initialTrip,
-}: TripDashboardClientProps) {
-  const [trip, setTrip] = useState(initialTrip);
-
+  if (!trip) {
+    return <div>Loading...</div>;
+  }
   const packedItemsWeight = trip.items
     .filter((item) => !item.isWorn)
     .reduce((acc, item) => acc + item.weightG * item.quantity, 0);
