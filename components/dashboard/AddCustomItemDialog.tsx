@@ -1,4 +1,3 @@
-// components/AddCustomItemDialog.tsx
 "use client";
 
 import { useState } from "react";

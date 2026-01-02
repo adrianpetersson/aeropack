@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import AddItemSearch from "./AddItemSearch";
 import { Header } from "./dashboard/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -9,6 +8,7 @@ import { PackingListWithItems } from "@/db/types";
 import { Progress } from "./ui/progress";
 import { ItemCard } from "./dashboard/ItemCard";
 import { gramsToKg } from "@/utils/format.utils";
+import { Searchbar } from "./dashboard/Searchbar/Searchbar";
 
 interface TripDashboardClientProps {
   initialTrip: PackingListWithItems;
@@ -52,7 +52,7 @@ export default function TripDashboardClient({
 
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Add Gear</h2>
-        <AddItemSearch listId={trip.id} />
+        <Searchbar listId={trip.id} />
       </div>
 
       <div className="grid gap-4">
