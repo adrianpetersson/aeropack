@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
 import { TanstackProvider } from "@/lib/providers/tanstack-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TanstackProvider>{children}</TanstackProvider>
+        <Toaster />
       </body>
     </html>
   );

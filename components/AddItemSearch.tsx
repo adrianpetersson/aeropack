@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useDebounce } from "@uidotdev/usehooks";
 
 import { searchWeightLibraryAction } from "@/actions/weight-library";
-import { Plus, Sparkles } from "@hugeicons/core-free-icons";
+import { Sparkles } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { addItemToListAction } from "@/actions/items";
+import { AddCustomItemDialog } from "./dashboard/AddCustomItemDialog";
 
 export default function AddItemSearch({ listId }: { listId: string }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,10 +81,7 @@ export default function AddItemSearch({ listId }: { listId: string }) {
                 &quot;
               </p>
               <div className="flex gap-2 justify-center">
-                <Button size="sm" variant="secondary">
-                  <HugeiconsIcon icon={Plus} className="w-4 h-4 mr-1" /> Add
-                  Custom
-                </Button>
+                <AddCustomItemDialog listId={listId} />
                 <Button
                   size="sm"
                   variant="outline"
