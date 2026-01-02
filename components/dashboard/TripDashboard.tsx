@@ -1,32 +1,15 @@
 "use client";
 
 import { Header } from "./Header";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
-import { ItemCard } from "./ItemCard";
+
 import { gramsToKg } from "@/utils/format.utils";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { useQuery } from "@tanstack/react-query";
 import { getPackingListsAction } from "@/actions/packing-lists";
-import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "../ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Bag,
-  Delete,
-  Luggage,
-  PackageIcon,
-  TravelBagFreeIcons,
-  TravelBagIcon,
-} from "@hugeicons/core-free-icons";
-import { PackedItems } from "./PackedItems";
+import { PackedItems } from "./PackedItems/PackedItems";
 
 export default function TripDashboard({ id }: { id: string }) {
   const { data: trip } = useQuery({
@@ -50,7 +33,7 @@ export default function TripDashboard({ id }: { id: string }) {
   const isOverLimit = totalWeight > limit;
 
   return (
-    <div className="space-y-8 border md:p-6 p-4 rounded-lg bg-white">
+    <div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
       <Header itemsCount={trip.items.length} limit={limit} />
 
       <Card>

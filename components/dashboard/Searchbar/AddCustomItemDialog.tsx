@@ -60,7 +60,7 @@ export function AddCustomItemDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger>
         <Button variant="outline" size="sm">
           <HugeiconsIcon icon={Plus} className="w-4 h-4 mr-2" /> Add Custom
         </Button>

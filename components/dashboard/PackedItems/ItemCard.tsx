@@ -1,13 +1,8 @@
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ListItems } from "@/db/types";
-import {
-  Delete,
-  Laptop,
-  Clothes,
-  BodySoapIcon,
-} from "@hugeicons/core-free-icons";
+import { Laptop, Clothes, BodySoapIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Badge } from "../ui/badge";
-import { Checkbox } from "../ui/checkbox";
 
 const getIcon = (category: string) => {
   switch (category) {
@@ -76,10 +71,6 @@ export const ItemCard = ({
             {item.quantity > 1 ? `Qty: ${item.quantity}` : "Single Unit"}
           </p>
         </div>
-
-        {/* <button className="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-destructive transition-all">
-          <HugeiconsIcon icon={Delete} size={18} />
-        </button> */}
       </div>
     </div>
   );
