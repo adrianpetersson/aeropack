@@ -1,21 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { useState } from "react";
 import AddItemSearch from "./AddItemSearch";
+import { Header } from "./dashboard/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { PackingListWithItems } from "@/db/types";
+import { Progress } from "./ui/progress";
+import { ItemCard } from "./dashboard/ItemCard";
+import { gramsToKg } from "@/utils/format.utils";
+
+interface TripDashboardClientProps {
+  initialTrip: PackingListWithItems;
+}
 
 export default function TripDashboardClient({
   initialTrip,
-}: {
-  initialTrip: any;
-}) {
+}: TripDashboardClientProps) {
   const [trip, setTrip] = useState(initialTrip);
 
-  // 1. Calculate Packed Weight (Exclude items marked as "isWorn")
   const packedItemsWeight = trip.items
-    .filter((item: any) => !item.isWorn)
-    .reduce((acc: number, item: any) => acc + item.weightG * item.quantity, 0);
+    .filter((item) => !item.isWorn)
+    .reduce((acc, item) => acc + item.weightG * item.quantity, 0);
 
   const totalWeight = packedItemsWeight + trip.bagWeightG;
   const limit = trip.maxWeightG;
@@ -25,50 +31,35 @@ export default function TripDashboardClient({
   const isOverLimit = totalWeight > limit;
 
   return (
-    <div className="space-y-8">
-      {/* Header Section */}
-      <section>
-        <h1 className="text-3xl font-bold">{trip.title}</h1>
-        <p className="text-muted-foreground">Limit: {limit / 1000}kg</p>
-      </section>
+    <div className="space-y-8 border p-6 rounded-lg bg-white">
+      <Header itemsCount={trip.items.length} limit={limit} />
 
-      {/* Weight Gauge Card */}
-      <div
-        className={`p-6 rounded-xl border-2 ${
-          isOverLimit ? "border-destructive bg-destructive/5" : "border-border"
-        }`}
-      >
-        <div className="flex justify-between mb-4 items-end">
-          <div>
-            <span className="text-4xl font-black">{totalWeight / 1000}</span>
-            <span className="text-xl ml-1 text-muted-foreground">
-              / {limit / 1000} kg
-            </span>
-          </div>
-          <div className="text-right text-sm">
-            {isOverLimit ? "⚠️ OVER LIMIT" : "✅ Within Limits"}
-          </div>
-        </div>
-        {/* <Progress value={percentage} className="h-4" /> */}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Weight Summary</CardTitle>
+          <Badge>{isOverLimit ? "⚠️ OVER LIMIT" : "✅ Within Limits"}</Badge>
+        </CardHeader>
+        <CardContent>
+          <span className="text-4xl font-black">
+            {gramsToKg(totalWeight, false)}
+          </span>
+          <span className="text-xl ml-1 text-muted-foreground">
+            / {gramsToKg(limit)} limit
+          </span>
+          <Progress value={percentage} />
+        </CardContent>
+      </Card>
 
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Add Gear</h2>
         <AddItemSearch listId={trip.id} />
       </div>
 
-      {/* Grid: Bag + Items */}
       <div className="grid gap-4">
         <h2 className="text-xl font-semibold">Packed Gear</h2>
-        {/* Loop through trip.items here to show what's inside */}
-        {trip.items.map((item: any) => (
-          <div
-            key={item.id}
-            className="p-4 border rounded-lg flex justify-between"
-          >
-            <span>{item.name}</span>
-            <span>{item.weightG}g</span>
-          </div>
+
+        {trip.items.map((item) => (
+          <ItemCard key={item.id} item={item} />
         ))}
       </div>
     </div>
