@@ -14,7 +14,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
-import { AddCustomItemDialog } from "../AddCustomItemDialog";
+import { AddCustomItemDialog } from "./AddCustomItemDialog";
 import { Sparkles } from "@hugeicons/core-free-icons";
 import { addItemToListAction } from "@/actions/items";
 

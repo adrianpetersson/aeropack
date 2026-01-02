@@ -1,0 +1,85 @@
+"use client";
+
+import { Header } from "./Header";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Progress } from "../ui/progress";
+import { ItemCard } from "./ItemCard";
+import { gramsToKg } from "@/utils/format.utils";
+import { Searchbar } from "./Searchbar/Searchbar";
+import { useQuery } from "@tanstack/react-query";
+import { getPackingListsAction } from "@/actions/packing-lists";
+import { ScrollArea } from "../ui/scroll-area";
+import { Button } from "../ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  Bag,
+  Delete,
+  Luggage,
+  PackageIcon,
+  TravelBagFreeIcons,
+  TravelBagIcon,
+} from "@hugeicons/core-free-icons";
+import { PackedItems } from "./PackedItems";
+
+export default function TripDashboard({ id }: { id: string }) {
+  const { data: trip } = useQuery({
+    queryKey: ["trip", id],
+    queryFn: () => getPackingListsAction(id),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  if (!trip) {
+    return <div>Loading...</div>;
+  }
+  const packedItemsWeight = trip.items
+    .filter((item) => !item.isWorn)
+    .reduce((acc, item) => acc + item.weightG * item.quantity, 0);
+
+  const totalWeight = packedItemsWeight + trip.bagWeightG;
+  const limit = trip.maxWeightG;
+  const percentage = Math.min((totalWeight / limit) * 100, 100);
+
+  // 2. Determine color based on weight limit
+  const isOverLimit = totalWeight > limit;
+
+  return (
+    <div className="space-y-8 border md:p-6 p-4 rounded-lg bg-white">
+      <Header itemsCount={trip.items.length} limit={limit} />
+
+      <Card>
+        <CardHeader className="flex justify-between items-center w-full">
+          <CardTitle>Weight Summary</CardTitle>
+          <Badge variant="outline">
+            {isOverLimit ? "⚠️ OVER LIMIT" : "✅ Within Limits"}
+          </Badge>
+        </CardHeader>
+        <CardFooter className="flex flex-col items-start space-y-2">
+          <div>
+            <span className="text-4xl font-black">
+              {gramsToKg(totalWeight, false)}
+            </span>
+            <span className="text-xl ml-1 text-muted-foreground">
+              / {gramsToKg(limit)} limit
+            </span>
+          </div>
+          <div className="w-full">
+            <Progress value={percentage} />
+          </div>
+        </CardFooter>
+      </Card>
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Add Gear</h2>
+        <Searchbar listId={trip.id} />
+      </div>
+      <PackedItems packingList={trip} />
+    </div>
+  );
+}

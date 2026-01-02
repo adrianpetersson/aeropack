@@ -1,7 +1,7 @@
-import TripDashboardClient from "@/components/TripDashboardClient";
 import { getQueryClient } from "@/lib/get-query-client";
 import { getPackingListsAction } from "@/actions/packing-lists";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import TripDashboard from "@/components/dashboard/TripDashboard";
 
 export default async function TripPage({
   params,
@@ -15,12 +15,13 @@ export default async function TripPage({
   await queryClient.prefetchQuery({
     queryKey: ["trip", id],
     queryFn: () => getPackingListsAction(id),
+    staleTime: 5 * 60 * 1000,
   });
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
+    <main className="max-w-4xl mx-auto md:p-6">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <TripDashboardClient id={id} />
+        <TripDashboard id={id} />
       </HydrationBoundary>
     </main>
   );

@@ -15,7 +15,7 @@ export const Header = ({ limit, itemsCount }: HeaderProps) => {
 
       <div>
         <Badge className="bg-white text-[#FF4F00] font-semibold">
-          {itemsCount} Items · {limit / 1000} kg Limit
+       Items · {limit / 1000} kg Limit   {itemsCount} 
         </Badge>
       </div>
     </div>

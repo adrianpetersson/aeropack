@@ -2,6 +2,7 @@
 
 import { db } from "@/db/db";
 import { listItems } from "@/db/schema";
+import { and, eq, inArray } from "drizzle-orm/sql/expressions/conditions";
 import { sql } from "drizzle-orm/sql/sql";
 import { revalidatePath } from "next/cache";
 
@@ -29,4 +30,15 @@ export async function addItemToListAction(data: {
 
   // This tells Next.js to refresh the data on the page
   revalidatePath(`/trips/${data.listId}`);
+}
+
+export async function bulkDeleteItemsAction(ids: string[], listId: string) {
+  await db.delete(listItems).where(
+    and(
+      eq(listItems.listId, listId), // Safety check: ensure they belong to this trip
+      inArray(listItems.id, ids) // Delete everything in the ID list
+    )
+  );
+
+  revalidatePath(`/trips/${listId}`);
 }
