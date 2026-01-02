@@ -34,7 +34,7 @@ export default function TripDashboard({ id }: { id: string }) {
 
   return (
     <div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
-      <Header itemsCount={trip.items.length} limit={limit} />
+      <Header title={trip.title} itemsCount={trip.items.length} limit={limit} />
 
       <Card>
         <CardHeader className="flex justify-between items-center w-full">

@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { startTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Airplane, ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { motion } from "motion/react";
+import { createPackingListAction } from "@/actions/packing-lists";
 
 export const HeroAction = () => {
   const [tripName, setTripName] = useState("");
+
+  const handleCreateTrip = () => {
+    startTransition(async () => {
+      await createPackingListAction(tripName);
+    });
+  };
 
   return (
     <div className="mx-auto mt-10 max-w-xl">
@@ -20,14 +27,15 @@ export const HeroAction = () => {
             <HugeiconsIcon icon={Airplane} size={20} />
           </div>
 
-          <input
-            placeholder="Where are you going? (e.g., 'Trip to Japan')"
+          <motion.input
+            placeholder="Name your trip (e.g., 'Trip to Japan')"
             className="flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400 text-sm md:text-base"
             value={tripName}
             onChange={(e) => setTripName(e.target.value)}
           />
 
           <Button
+            onClick={handleCreateTrip}
             className="rounded-full px-6 h-10 md:h-12 font-semibold shadow-lg shadow-primary/20 transition-transform active:scale-95"
             disabled={!tripName}
           >
