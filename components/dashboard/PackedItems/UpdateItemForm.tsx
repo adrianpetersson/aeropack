@@ -25,7 +25,7 @@ import { updateItemAction } from "@/actions/items";
 
 interface UpdateItemFormProps {
   item: ListItems;
-  onCancel: () => void;
+  toggleExpand: () => void;
 }
 
 const categories = [
@@ -50,7 +50,7 @@ const updateItemFormSchema = z.object({
     .max(50000, "Item weight cannot exceed 50kg."),
 });
 
-export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
+export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
   const queryClient = useQueryClient();
   const {
     formState: { isDirty },
@@ -70,9 +70,11 @@ export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["trip", item.listId] });
       toast.success(`${item.name} updated in your bag!`);
+      toggleExpand();
     },
-    onError: () => {
+    onError: (error) => {
       toast.error("Failed to update item. Please try again.");
+      console.error("Update item error:", error);
     },
   });
 
@@ -225,7 +227,7 @@ export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
 
       <div className="flex justify-end gap-2 pt-2 border-t border-slate-200/50">
         <Button
-          onClick={onCancel}
+          onClick={toggleExpand}
           variant="secondary"
           type="button"
           size="sm"
