@@ -48,7 +48,10 @@ export const Searchbar = ({ listId }: { listId: string }) => {
           <CommandEmpty>
             <span>No results found for {debouncedSearch}</span>
             <div className="flex mt-2 gap-2 justify-center">
-              <AddCustomItemDialog listId={listId} />
+              <AddCustomItemDialog
+                initialName={debouncedSearch}
+                listId={listId}
+              />
               <Button disabled size="sm" variant="outline">
                 <HugeiconsIcon icon={Sparkles} className="w-4 h-4 mr-1" /> Ask
                 AI to Estimate

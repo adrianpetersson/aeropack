@@ -4,7 +4,12 @@ import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import {
   Dialog,
   DialogContent,
@@ -34,10 +39,9 @@ export function AddCustomItemDialog({
   const { mutate, isPending } = useMutation({
     mutationFn: addItemToListAction,
     onSuccess: () => {
-      // 2. Refresh the trip data so the progress bar moves
       queryClient.invalidateQueries({ queryKey: ["trip", listId] });
       toast.success(`${name} added to your bag!`);
-      setOpen(false); // Close modal
+      setOpen(false);
       setName("");
       setWeight("");
     },
@@ -48,12 +52,12 @@ export function AddCustomItemDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !weight) return;
+    if (!name) return;
 
     mutate({
       listId,
       name,
-      weightG: parseInt(weight),
+      weightG: weight ? parseInt(weight) : 0,
       category: "misc",
     });
   };
@@ -69,27 +73,39 @@ export function AddCustomItemDialog({
         <DialogHeader>
           <DialogTitle>Add Custom Gear</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          <div className="space-y-2">
-            <Label>Item Name</Label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Vintage Camera"
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>Weight (grams)</Label>
-            <Input
-              type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="0"
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={isPending}>
+        <form onSubmit={handleSubmit} className="pt-4">
+          <FieldGroup className="space-y-4">
+            <Field>
+              <FieldLabel htmlFor="custom-item-name">Item Name</FieldLabel>
+              <Input
+                id="custom-item-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Hiking Boots"
+                required
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="custom-item-weight">
+                Weight (grams)
+              </FieldLabel>
+              <FieldDescription>
+                If unsure, you can skip the weight input and estimate later.
+              </FieldDescription>
+              <Input
+                id="custom-item-weight"
+                type="number"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                placeholder="0"
+              />
+            </Field>
+          </FieldGroup>
+          <Button
+            type="submit"
+            className="w-full mt-6"
+            disabled={!name || isPending}
+          >
             {isPending ? <Spinner /> : null}
             {isPending ? "Saving..." : "Save to Packing List"}
           </Button>
