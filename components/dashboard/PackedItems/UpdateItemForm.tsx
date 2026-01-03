@@ -20,6 +20,8 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateItemAction } from "@/actions/items";
 
 interface UpdateItemFormProps {
   item: ListItems;
@@ -45,13 +47,13 @@ const updateItemFormSchema = z.object({
   //TODO: Add weight validation based on trip limit
   weight: z.coerce
     .number<number>()
-    .max(50000, "Item weight cannot exceed 50kg.")
-    .optional(),
+    .max(50000, "Item weight cannot exceed 50kg."),
 });
 
 export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
+  const queryClient = useQueryClient();
   const {
-    formState: { isDirty, dirtyFields },
+    formState: { isDirty },
     control,
   } = useForm<z.infer<typeof updateItemFormSchema>>({
     resolver: zodResolver(updateItemFormSchema),
@@ -63,11 +65,21 @@ export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
     },
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateItemAction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trip", item.listId] });
+      toast.success(`${item.name} updated in your bag!`);
+    },
+    onError: () => {
+      toast.error("Failed to update item. Please try again.");
+    },
+  });
+
   const onSubmit: SubmitHandler<z.infer<typeof updateItemFormSchema>> = (
     data
   ) => {
-    toast.success("Items updated successfully!");
-    console.log(data);
+    mutate({ ...data, itemId: item.id, listId: item.listId });
   };
 
   return (
@@ -222,7 +234,7 @@ export const UpdateItemForm = ({ item, onCancel }: UpdateItemFormProps) => {
           Cancel
         </Button>
         <Button
-          disabled={!isDirty}
+          disabled={!isDirty || isPending}
           type="submit"
           size="sm"
           className="min-w-20"

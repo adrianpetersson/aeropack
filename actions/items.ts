@@ -32,6 +32,29 @@ export async function addItemToListAction(data: {
   revalidatePath(`/trips/${data.listId}`);
 }
 
+export async function updateItemAction(data: {
+  itemId: string;
+  listId: string;
+  name: string;
+  category: string;
+  quantity: number;
+  weight: number;
+}) {
+  await db
+    .update(listItems)
+    .set({
+      name: data.name,
+      category: data.category,
+      quantity: data.quantity,
+      weightG: data.weight,
+    })
+    .where(
+      and(eq(listItems.id, data.itemId), eq(listItems.listId, data.listId))
+    );
+
+  revalidatePath(`/trips/${data.listId}`);
+}
+
 export async function bulkDeleteItemsAction(ids: string[], listId: string) {
   await db.delete(listItems).where(
     and(
