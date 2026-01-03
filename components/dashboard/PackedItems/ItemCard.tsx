@@ -47,8 +47,10 @@ export const ItemCard = ({
         {expanded ? (
           <div onClick={(e) => e.stopPropagation()} className="w-full">
             <UpdateItemForm
-              toggleExpand={() => setExpanded(!expanded)}
               item={item}
+              listId={item.listId}
+              onSuccess={() => setExpanded(false)}
+              onCancel={() => setExpanded(false)}
             />
           </div>
         ) : (

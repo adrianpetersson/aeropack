@@ -4,6 +4,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldDescription,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,19 +22,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateItemAction } from "@/actions/items";
+import { updateItemAction, addItemToListAction } from "@/actions/items";
+import { categories } from "@/constants";
+import { is } from "drizzle-orm";
 
 interface UpdateItemFormProps {
-  item: ListItems;
-  toggleExpand: () => void;
+  item?: ListItems;
+  listId: string;
+  onSuccess: () => void;
+  onCancel: () => void;
+  initialName?: string;
+  variant?: "update" | "create";
 }
-
-const categories = [
-  { label: "Clothing", value: "clothing" },
-  { label: "Toiletries", value: "toiletries" },
-  { label: "Tech", value: "tech" },
-  { label: "Misc", value: "misc" },
-];
 
 const updateItemFormSchema = z.object({
   name: z
@@ -50,27 +50,37 @@ const updateItemFormSchema = z.object({
     .max(50000, "Item weight cannot exceed 50kg."),
 });
 
-export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
+export const UpdateItemForm = ({
+  item,
+  listId,
+  onSuccess,
+  onCancel,
+  initialName = "",
+  variant = "update",
+}: UpdateItemFormProps) => {
   const queryClient = useQueryClient();
+  const isUpdateMode = !!item;
+  const isCreateMode = variant === "create";
+
   const {
     formState: { isDirty },
     control,
   } = useForm<z.infer<typeof updateItemFormSchema>>({
     resolver: zodResolver(updateItemFormSchema),
     defaultValues: {
-      name: item.name,
-      category: item.category,
-      quantity: item.quantity,
-      weight: item.weightG,
+      name: item?.name || initialName,
+      category: item?.category || "misc",
+      quantity: item?.quantity || 1,
+      weight: item?.weightG || 0,
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: updateItem, isPending: isUpdating } = useMutation({
     mutationFn: updateItemAction,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["trip", item.listId] });
-      toast.success(`${item.name} updated in your bag!`);
-      toggleExpand();
+      queryClient.invalidateQueries({ queryKey: ["trip", listId] });
+      toast.success("Item updated successfully!");
+      onSuccess();
     },
     onError: (error) => {
       toast.error("Failed to update item. Please try again.");
@@ -78,26 +88,67 @@ export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
     },
   });
 
+  const { mutate: createItem, isPending: isCreating } = useMutation({
+    mutationFn: addItemToListAction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trip", listId] });
+      toast.success("Item added to your bag!");
+      onSuccess();
+    },
+    onError: () => {
+      toast.error("Failed to add item. Please try again.");
+    },
+  });
+
+  const isPending = isUpdating || isCreating;
+
   const onSubmit: SubmitHandler<z.infer<typeof updateItemFormSchema>> = (
     data
   ) => {
-    mutate({ ...data, itemId: item.id, listId: item.listId });
+    if (isUpdateMode && item) {
+      updateItem({
+        ...data,
+        itemId: item.id,
+        listId,
+      });
+    } else {
+      createItem({
+        listId,
+        name: data.name,
+        category: data.category,
+        weightG: data.weight,
+      });
+    }
   };
 
   return (
     <form
-      className="w-full flex flex-col gap-4 border border-dashed p-3 sm:p-4 bg-blue-50/30 rounded-lg"
+      className={`w-full flex flex-col gap-4 ${
+        isCreateMode
+          ? ""
+          : "border border-dashed p-3 sm:p-4 bg-blue-50/30 rounded-lg"
+      }`}
       id="update-item-form"
       onSubmit={control.handleSubmit(onSubmit)}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-        <FieldGroup className="flex flex-col sm:flex-row items-stretch gap-3">
+      <div
+        className={`w-full ${
+          isCreateMode
+            ? "flex flex-col gap-4"
+            : "grid grid-cols-1 lg:grid-cols-2 gap-4"
+        }`}
+      >
+        <FieldGroup
+          className={`flex items-stretch gap-3 ${
+            isCreateMode ? "flex-col" : "flex-col sm:flex-row"
+          }`}
+        >
           <Controller
             name="name"
             control={control}
             render={({ field, fieldState }) => (
               <Field
-                className="flex-1 min-w-0"
+                className="flex-2 min-w-0"
                 data-invalid={fieldState.invalid}
               >
                 <FieldLabel
@@ -124,7 +175,9 @@ export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
             control={control}
             render={({ field, fieldState }) => (
               <Field
-                className="flex-1 min-w-0 sm:max-w-40"
+                className={`flex-1 min-w-0 ${
+                  isCreateMode ? "" : "sm:max-w-40"
+                }`}
                 data-invalid={fieldState.invalid}
               >
                 <FieldContent>
@@ -143,7 +196,7 @@ export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
                   value={field.value}
                   onValueChange={field.onChange}
                   items={categories}
-                  defaultValue={item.category}
+                  defaultValue={item?.category || "other"}
                 >
                   <SelectTrigger
                     aria-invalid={fieldState.invalid}
@@ -166,21 +219,24 @@ export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
           />
         </FieldGroup>
 
-        <FieldGroup className="flex flex-row items-stretch gap-3 lg:justify-end">
+        <FieldGroup className="flex flex-row items-end justify-between gap-3">
           <Controller
             name="weight"
             control={control}
             render={({ field, fieldState }) => (
-              <Field
-                className="flex-1 sm:max-w-35"
-                data-invalid={fieldState.invalid}
-              >
+              <Field className="flex-1 " data-invalid={fieldState.invalid}>
                 <FieldLabel
                   className="text-[10px] font-bold tracking-wider text-slate-400 uppercase"
                   htmlFor="item-weight"
                 >
                   Weight (g)
                 </FieldLabel>
+                {}
+                {isCreateMode && (
+                  <FieldDescription>
+                    You can skip adding weight if unsure and update it later.
+                  </FieldDescription>
+                )}
                 <Input
                   {...field}
                   id="item-weight"
@@ -225,23 +281,28 @@ export const UpdateItemForm = ({ item, toggleExpand }: UpdateItemFormProps) => {
         </FieldGroup>
       </div>
 
-      <div className="flex justify-end gap-2 pt-2 border-t border-slate-200/50">
+      <div
+        className={`flex justify-end gap-2 ${
+          isCreateMode ? "pt-2" : "pt-2 border-t border-slate-200/50"
+        }`}
+      >
         <Button
-          onClick={toggleExpand}
+          onClick={onCancel}
           variant="secondary"
           type="button"
           size="sm"
           className="min-w-20"
+          disabled={isPending}
         >
           Cancel
         </Button>
         <Button
-          disabled={!isDirty || isPending}
+          disabled={(isUpdateMode && !isDirty) || isPending}
           type="submit"
           size="sm"
           className="min-w-20"
         >
-          Save
+          {isPending ? "Saving..." : isUpdateMode ? "Update" : "Add Item"}
         </Button>
       </div>
     </form>
