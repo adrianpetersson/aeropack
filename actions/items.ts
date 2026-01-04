@@ -1,11 +1,11 @@
 "use server";
 
-import { db } from "@/db/db";
-import { listItems } from "@/db/schema";
-import type { ListItems } from "@/db/types";
 import { and, eq, inArray } from "drizzle-orm/sql/expressions/conditions";
 import { sql } from "drizzle-orm/sql/sql";
 import { revalidatePath } from "next/cache";
+import { db } from "@/db/db";
+import { listItems } from "@/db/schema";
+import type { ListItems } from "@/db/types";
 
 export async function addItemToListAction(
 	item: Omit<ListItems, "id" | "isWorn">,

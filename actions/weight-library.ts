@@ -1,8 +1,8 @@
 "use server";
 
+import { ilike, or } from "drizzle-orm";
 import { db } from "@/db/db";
 import { weightLibrary } from "@/db/schema";
-import { ilike, or } from "drizzle-orm";
 
 export async function searchWeightLibraryAction(searchTerm: string) {
 	if (!searchTerm || searchTerm.length < 2) return [];
