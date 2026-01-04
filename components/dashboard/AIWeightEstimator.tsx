@@ -16,17 +16,17 @@ export function AIWeightEstimator({ packingList }: AIWeightEstimatorProps) {
   const queryClient = useQueryClient();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const estimatedItemsCount = packingList.items.filter(
-    (item) => item.isEstimated
+  const notEstimatedItemsCount = packingList.items.filter(
+    (item) => !item.isEstimated
   ).length;
 
-  if (estimatedItemsCount === 0) {
+  if (notEstimatedItemsCount === 0) {
     return null;
   }
 
   const handleAIAnalysis = async () => {
     const itemsToEstimate = packingList.items.filter(
-      (item) => item.isEstimated
+      (item) => !item.isEstimated
     );
 
     setIsAnalyzing(true);
@@ -92,8 +92,9 @@ export function AIWeightEstimator({ packingList }: AIWeightEstimatorProps) {
             </h3>
           </div>
           <p className="text-sm text-purple-700 dark:text-purple-300">
-            {estimatedItemsCount} item{estimatedItemsCount !== 1 ? "s" : ""}{" "}
-            ready for AI weight estimation
+            {notEstimatedItemsCount} item
+            {notEstimatedItemsCount !== 1 ? "s" : ""} ready for AI weight
+            estimation
           </p>
         </div>
         <Button
