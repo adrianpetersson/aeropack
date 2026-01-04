@@ -1,20 +1,11 @@
-import {
-	Airplane,
-	ArrowRight02Icon,
-	WeightScaleIcon,
-} from "@hugeicons/core-free-icons";
+import { Airplane, WeightScaleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { HeroAction } from "./HeroAction";
 
 export const HeroSection = () => {
 	return (
 		<section className="relative overflow-hidden pt-16 pb-24 lg:pt-32">
-			{/* Subtlest background grid for that "engineering" feel */}
-			<div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px]" />
-
 			<div className="container mx-auto px-4 text-center">
 				<Badge
 					variant="secondary"
@@ -34,7 +25,7 @@ export const HeroSection = () => {
 				</p>
 
 				<HeroAction />
-				{/* Hero Mockup: Showing the "Weight Limit" UX */}
+
 				<div className="mt-16 mx-auto max-w-5xl rounded-xl border border-slate-200 bg-white/50 p-2 shadow-2xl backdrop-blur-sm">
 					<div className="rounded-lg border border-slate-100 bg-white p-4 md:p-8">
 						<div className="flex flex-col md:flex-row justify-between items-end gap-8">

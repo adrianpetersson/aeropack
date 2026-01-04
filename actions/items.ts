@@ -1,25 +1,23 @@
 "use server";
 
+import { db } from "@/db/db";
+import { listItems } from "@/db/schema";
+import type { ListItems } from "@/db/types";
 import { and, eq, inArray } from "drizzle-orm/sql/expressions/conditions";
 import { sql } from "drizzle-orm/sql/sql";
 import { revalidatePath } from "next/cache";
-import { db } from "@/db/db";
-import { listItems } from "@/db/schema";
 
-export async function addItemToListAction(data: {
-	listId: string;
-	name: string;
-	weightG: number;
-	category: string;
-}) {
+export async function addItemToListAction(
+	item: Omit<ListItems, "id" | "isWorn">,
+) {
 	await db
 		.insert(listItems)
 		.values({
-			listId: data.listId,
-			name: data.name,
-			weightG: data.weightG,
-			category: data.category,
-			isEstimated: true, // Since it's coming from the library
+			listId: item.listId,
+			name: item.name,
+			weightG: item.weightG,
+			category: item.category,
+			isEstimated: item.isEstimated,
 		})
 		.onConflictDoUpdate({
 			target: [listItems.listId, listItems.name],
@@ -28,40 +26,27 @@ export async function addItemToListAction(data: {
 			},
 		});
 
-	// This tells Next.js to refresh the data on the page
-	revalidatePath(`/trips/${data.listId}`);
+	revalidatePath(`/trips/${item.listId}`);
 }
 
-export async function updateItemAction(data: {
-	itemId: string;
-	listId: string;
-	name: string;
-	category: string;
-	quantity: number;
-	weight: number;
-}) {
+export async function updateItemAction(item: Omit<ListItems, "isWorn">) {
 	await db
 		.update(listItems)
 		.set({
-			name: data.name,
-			category: data.category,
-			quantity: data.quantity,
-			weightG: data.weight,
+			name: item.name,
+			category: item.category,
+			quantity: item.quantity,
+			weightG: item.weightG,
 		})
-		.where(
-			and(eq(listItems.id, data.itemId), eq(listItems.listId, data.listId)),
-		);
+		.where(and(eq(listItems.id, item.id), eq(listItems.listId, item.listId)));
 
-	revalidatePath(`/trips/${data.listId}`);
+	revalidatePath(`/trips/${item.listId}`);
 }
 
 export async function bulkDeleteItemsAction(ids: string[], listId: string) {
-	await db.delete(listItems).where(
-		and(
-			eq(listItems.listId, listId), // Safety check: ensure they belong to this trip
-			inArray(listItems.id, ids), // Delete everything in the ID list
-		),
-	);
+	await db
+		.delete(listItems)
+		.where(and(eq(listItems.listId, listId), inArray(listItems.id, ids)));
 
 	revalidatePath(`/trips/${listId}`);
 }

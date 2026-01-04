@@ -1,30 +1,29 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { is } from "drizzle-orm";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
 import { addItemToListAction, updateItemAction } from "@/actions/items";
 import { Button } from "@/components/ui/button";
 import {
-	Field,
-	FieldContent,
-	FieldDescription,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { categories } from "@/constants";
 import type { ListItems } from "@/db/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 interface UpdateItemFormProps {
 	item?: ListItems;
@@ -45,7 +44,7 @@ const updateItemFormSchema = z.object({
 		.number<number>()
 		.max(100, "You cannot pack more than 100 of an item."),
 	//TODO: Add weight validation based on trip limit
-	weight: z.coerce
+	weightG: z.coerce
 		.number<number>()
 		.max(50000, "Item weight cannot exceed 50kg."),
 });
@@ -71,7 +70,7 @@ export const UpdateItemForm = ({
 			name: item?.name || initialName,
 			category: item?.category || "misc",
 			quantity: item?.quantity || 1,
-			weight: item?.weightG || 0,
+			weightG: item?.weightG || 0,
 		},
 	});
 
@@ -108,15 +107,18 @@ export const UpdateItemForm = ({
 		if (isUpdateMode && item) {
 			updateItem({
 				...data,
-				itemId: item.id,
+				id: item.id,
 				listId,
+				isEstimated: item.isEstimated,
 			});
 		} else {
 			createItem({
 				listId,
 				name: data.name,
 				category: data.category,
-				weightG: data.weight,
+				weightG: data.weightG,
+				quantity: data.quantity,
+				isEstimated: false,
 			});
 		}
 	};
@@ -221,7 +223,7 @@ export const UpdateItemForm = ({
 
 				<FieldGroup className="flex flex-row items-end justify-between gap-3">
 					<Controller
-						name="weight"
+						name="weightG"
 						control={control}
 						render={({ field, fieldState }) => (
 							<Field className="flex-1 " data-invalid={fieldState.invalid}>
