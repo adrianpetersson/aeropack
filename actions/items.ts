@@ -43,7 +43,13 @@ export async function updateItemAction(item: Omit<ListItems, "isWorn">) {
 	revalidatePath(`/trips/${item.listId}`);
 }
 
-export async function bulkDeleteItemsAction(ids: string[], listId: string) {
+export async function bulkDeleteItemsAction({
+	ids,
+	listId,
+}: {
+	ids: ListItems["id"][];
+	listId: string;
+}) {
 	await db
 		.delete(listItems)
 		.where(and(eq(listItems.listId, listId), inArray(listItems.id, ids)));

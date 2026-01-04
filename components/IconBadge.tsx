@@ -4,9 +4,11 @@ import { cn } from "@/lib/utils";
 export const IconBadge = ({
   icon,
   className,
+  size = "lg",
 }: {
   icon: IconSvgElement;
   className?: string;
+  size?: "sm" | "lg" | "xl";
 }) => {
   return (
     <div

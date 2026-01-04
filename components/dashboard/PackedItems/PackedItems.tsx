@@ -1,61 +1,30 @@
 "use client";
 
-import { Luggage } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
-
 import type { PackingListWithItems } from "@/db/types";
-import { Button } from "../../ui/button";
 import { ScrollArea } from "../../ui/scroll-area";
 import { Searchbar } from "../Searchbar/Searchbar";
-import { DeleteButton } from "./DeleteButton";
-import { ItemCard } from "./ItemCard";
+import { ItemCardV2 } from "./ItemCardV2";
 
 export const PackedItems = ({
   packingList,
 }: {
   packingList: PackingListWithItems;
 }) => {
-  const [edit, setEdit] = useState(false);
-  const [itemsToDelete, setItemsToDelete] = useState<string[]>([]);
-
   return (
     <div className="grid gap-4 ">
       <div className="flex-col justify-between items-center">
         <div className="w-full">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold">Add Gear</h2>
-            <Button
-              onClick={() => {
-                setEdit(!edit);
-                setItemsToDelete([]);
-              }}
-            >
-              {edit ? "Close" : "Edit"}{" "}
-              <HugeiconsIcon icon={Luggage} size={18} />
-            </Button>
           </div>
           <Searchbar listId={packingList.id} />
         </div>
       </div>
       <ScrollArea className="max-h-150 border rounded-md">
         {packingList.items.map((item) => (
-          <ItemCard
-            itemsToDelete={itemsToDelete}
-            setItemsToDelete={setItemsToDelete}
-            editingMode={edit}
-            key={item.id}
-            item={item}
-          />
+          <ItemCardV2 key={item.id} item={item} />
         ))}
       </ScrollArea>
-      {edit && itemsToDelete.length > 0 && (
-        <DeleteButton
-          itemsToDelete={itemsToDelete}
-          setItemsToDelete={setItemsToDelete}
-          packingListId={packingList.id}
-        />
-      )}
     </div>
   );
 };
