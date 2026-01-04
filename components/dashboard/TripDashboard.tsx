@@ -1,71 +1,70 @@
 "use client";
 
-import { Header } from "./Header";
-import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { Progress } from "../ui/progress";
-
-import { gramsToKg } from "@/utils/format.utils";
-import { Searchbar } from "./Searchbar/Searchbar";
 import { useQuery } from "@tanstack/react-query";
 import { getPackingListsAction } from "@/actions/packing-lists";
-import { PackedItems } from "./PackedItems/PackedItems";
+import { gramsToKg } from "@/utils/format.utils";
+import { Badge } from "../ui/badge";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Progress } from "../ui/progress";
 import { AIWeightEstimator } from "./AIWeightEstimator";
+import { Header } from "./Header";
+import { PackedItems } from "./PackedItems/PackedItems";
+import { Searchbar } from "./Searchbar/Searchbar";
 
 export default function TripDashboard({ id }: { id: string }) {
-  const { data: trip } = useQuery({
-    queryKey: ["trip", id],
-    queryFn: () => getPackingListsAction(id),
-    staleTime: 5 * 60 * 1000,
-  });
+	const { data: trip } = useQuery({
+		queryKey: ["trip", id],
+		queryFn: () => getPackingListsAction(id),
+		staleTime: 5 * 60 * 1000,
+	});
 
-  if (!trip) {
-    return <div>Loading...</div>;
-  }
-  const packedItemsWeight = trip.items
-    .filter((item) => !item.isWorn)
-    .reduce((acc, item) => acc + item.weightG * item.quantity, 0);
+	if (!trip) {
+		return <div>Loading...</div>;
+	}
+	const packedItemsWeight = trip.items
+		.filter((item) => !item.isWorn)
+		.reduce((acc, item) => acc + item.weightG * item.quantity, 0);
 
-  const totalWeight = packedItemsWeight + trip.bagWeightG;
-  const limit = trip.maxWeightG;
-  const percentage = Math.min((totalWeight / limit) * 100, 100);
+	const totalWeight = packedItemsWeight + trip.bagWeightG;
+	const limit = trip.maxWeightG;
+	const percentage = Math.min((totalWeight / limit) * 100, 100);
 
-  // 2. Determine color based on weight limit
-  const isOverLimit = totalWeight > limit;
+	// 2. Determine color based on weight limit
+	const isOverLimit = totalWeight > limit;
 
-  return (
-    <div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
-      <Header title={trip.title} itemsCount={trip.items.length} limit={limit} />
+	return (
+		<div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
+			<Header title={trip.title} itemsCount={trip.items.length} limit={limit} />
 
-      <AIWeightEstimator packingList={trip} />
+			<AIWeightEstimator packingList={trip} />
 
-      <Card>
-        <CardHeader className="flex justify-between items-center w-full">
-          <CardTitle>Weight Summary</CardTitle>
-          <Badge variant="outline">
-            {isOverLimit ? "⚠️ OVER LIMIT" : "✅ Within Limits"}
-          </Badge>
-        </CardHeader>
-        <CardFooter className="flex flex-col items-start space-y-2">
-          <div>
-            <span className="text-4xl font-black">
-              {gramsToKg(totalWeight, false)}
-            </span>
-            <span className="text-xl ml-1 text-muted-foreground">
-              / {gramsToKg(limit)} limit
-            </span>
-          </div>
-          <div className="w-full">
-            <Progress value={percentage} />
-          </div>
-        </CardFooter>
-      </Card>
+			<Card>
+				<CardHeader className="flex justify-between items-center w-full">
+					<CardTitle>Weight Summary</CardTitle>
+					<Badge variant="outline">
+						{isOverLimit ? "⚠️ OVER LIMIT" : "✅ Within Limits"}
+					</Badge>
+				</CardHeader>
+				<CardFooter className="flex flex-col items-start space-y-2">
+					<div>
+						<span className="text-4xl font-black">
+							{gramsToKg(totalWeight, false)}
+						</span>
+						<span className="text-xl ml-1 text-muted-foreground">
+							/ {gramsToKg(limit)} limit
+						</span>
+					</div>
+					<div className="w-full">
+						<Progress value={percentage} />
+					</div>
+				</CardFooter>
+			</Card>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Add Gear</h2>
-        <Searchbar listId={trip.id} />
-      </div>
-      <PackedItems packingList={trip} />
-    </div>
-  );
+			<div className="space-y-4">
+				<h2 className="text-xl font-semibold">Add Gear</h2>
+				<Searchbar listId={trip.id} />
+			</div>
+			<PackedItems packingList={trip} />
+		</div>
+	);
 }
