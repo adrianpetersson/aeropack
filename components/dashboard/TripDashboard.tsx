@@ -10,6 +10,7 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import { useQuery } from "@tanstack/react-query";
 import { getPackingListsAction } from "@/actions/packing-lists";
 import { PackedItems } from "./PackedItems/PackedItems";
+import { AIWeightEstimator } from "./AIWeightEstimator";
 
 export default function TripDashboard({ id }: { id: string }) {
   const { data: trip } = useQuery({
@@ -35,6 +36,8 @@ export default function TripDashboard({ id }: { id: string }) {
   return (
     <div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
       <Header title={trip.title} itemsCount={trip.items.length} limit={limit} />
+
+      <AIWeightEstimator packingList={trip} />
 
       <Card>
         <CardHeader className="flex justify-between items-center w-full">

@@ -4,7 +4,6 @@ import { startTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Airplane, ArrowRight02Icon } from "@hugeicons/core-free-icons";
-import { motion } from "motion/react";
 import { createPackingListAction } from "@/actions/packing-lists";
 
 export const HeroAction = () => {
@@ -27,7 +26,7 @@ export const HeroAction = () => {
             <HugeiconsIcon icon={Airplane} size={20} />
           </div>
 
-          <motion.input
+          <input
             placeholder="Name your trip (e.g., 'Trip to Japan')"
             className="flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400 text-sm md:text-base"
             value={tripName}
