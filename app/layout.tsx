@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ProgressProvider } from "@bprogress/next/app";
 import { Toaster } from "@/components/ui/sonner";
 import ProgressClientProvider from "@/lib/providers/progress-client-provider";
 import { TanstackProvider } from "@/lib/providers/tanstack-provider";
