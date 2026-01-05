@@ -1,21 +1,21 @@
 "use client";
 import { Down, PenIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
 import type { ListItems } from "@/db/types";
 import { ItemIcon } from "./ItemIcon";
 import { UpdateItemForm } from "./UpdateItemForm";
 
 interface ItemCardV2Props {
 	item: ListItems;
+	isExpanded: boolean;
+	onToggle: () => void;
 }
 
-export const ItemCard = ({ item }: ItemCardV2Props) => {
-	const [expanded, setExpanded] = useState(false);
+export const ItemCard = ({ item, isExpanded, onToggle }: ItemCardV2Props) => {
 	return (
 		<article
 			className={`group flex flex-col gap-4 border-b p-4 transition-all duration-200 ${
-				expanded
+				isExpanded
 					? "bg-blue-50/50 shadow-sm"
 					: "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50/50"
 			}`}
@@ -45,34 +45,34 @@ export const ItemCard = ({ item }: ItemCardV2Props) => {
 						</data>
 					</div>
 					<button
-						onClick={() => setExpanded(!expanded)}
+						onClick={onToggle}
 						className={`rounded-lg p-2 transition-all duration-200 ${
-							expanded
+							isExpanded
 								? "bg-blue-100 text-blue-600"
 								: "text-slate-400 opacity-100 hover:bg-slate-100 hover:text-slate-600 lg:opacity-0 lg:group-hover:opacity-100"
 						}`}
 						type="button"
-						aria-expanded={expanded}
-						aria-label={expanded ? "Close edit form" : "Edit item"}
+						aria-expanded={isExpanded}
+						aria-label={isExpanded ? "Close edit form" : "Edit item"}
 					>
 						<HugeiconsIcon
-							icon={expanded ? Down : PenIcon}
+							icon={isExpanded ? Down : PenIcon}
 							className={`h-4 w-4 transition-transform duration-200 ${
-								expanded ? "rotate-180" : ""
+								isExpanded ? "rotate-180" : ""
 							}`}
 						/>
 					</button>
 				</div>
 			</div>
-			{expanded && (
+			{isExpanded && (
 				<section
 					className="fade-in slide-in-from-top-2 w-full animate-in duration-200"
 					aria-label="Edit item form"
 				>
 					<UpdateItemForm
 						listId={item.listId}
-						onSuccess={() => setExpanded(false)}
-						onCancel={() => setExpanded(false)}
+						onSuccess={onToggle}
+						onCancel={onToggle}
 						item={item}
 					/>
 				</section>

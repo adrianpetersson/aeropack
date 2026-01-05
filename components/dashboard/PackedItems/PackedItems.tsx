@@ -15,6 +15,11 @@ export const PackedItems = ({
 	packingList: PackingListWithItems;
 }) => {
 	const [sortBy, setSortBy] = useState<SortBy>("name");
+	const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
+	const handleToggle = (id: string) => {
+		setExpandedCardId((prevId) => (prevId === id ? null : id));
+	};
 
 	const sortedItems = useMemo(
 		() =>
@@ -38,7 +43,12 @@ export const PackedItems = ({
 			</div>
 			<ScrollArea className="max-h-150 rounded-md border">
 				{sortedItems.map((item) => (
-					<ItemCard key={item.id} item={item} />
+					<ItemCard
+						isExpanded={expandedCardId === item.id}
+						onToggle={() => handleToggle(item.id)}
+						key={item.id}
+						item={item}
+					/>
 				))}
 			</ScrollArea>
 		</div>
