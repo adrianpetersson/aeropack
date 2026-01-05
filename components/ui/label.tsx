@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noLabelWithoutControl: default shadcn component */
 "use client";
 
 import type * as React from "react";

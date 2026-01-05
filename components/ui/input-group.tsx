@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/a11y/useSemanticElements: shadcn defaults */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: shadcn defaults */
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";

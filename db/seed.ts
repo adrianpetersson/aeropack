@@ -1,5 +1,6 @@
+/** biome-ignore-all lint/correctness/noUnusedVariables: might be used later */
 import { db } from "./db";
-import { listItems, packingLists, weightLibrary } from "./schema";
+import { listItems, packingLists } from "./schema";
 
 async function main() {
 	console.log("Emptying library...");

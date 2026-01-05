@@ -7,83 +7,83 @@ import { addItemToListAction } from "@/actions/items";
 import { searchWeightLibraryAction } from "@/actions/weight-library";
 
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
 } from "@/components/ui/command";
 import { AddCustomItemDialog } from "./AddCustomItemDialog";
 
 export const Searchbar = ({ listId }: { listId: string }) => {
-  const queryClient = useQueryClient();
-  const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearch = useDebounce(searchTerm, 300);
+	const queryClient = useQueryClient();
+	const [searchTerm, setSearchTerm] = useState("");
+	const debouncedSearch = useDebounce(searchTerm, 300);
 
-  const { data: results } = useQuery({
-    queryKey: ["weight-library", debouncedSearch],
-    queryFn: () => searchWeightLibraryAction(debouncedSearch),
-    enabled: debouncedSearch.length >= 2,
-  });
+	const { data: results } = useQuery({
+		queryKey: ["weight-library", debouncedSearch],
+		queryFn: () => searchWeightLibraryAction(debouncedSearch),
+		enabled: debouncedSearch.length >= 2,
+	});
 
-  const { mutate: addItem, isPending } = useMutation({
-    mutationFn: addItemToListAction,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["trip", listId] });
-    },
-  });
+	const { mutate: addItem, isPending } = useMutation({
+		mutationFn: addItemToListAction,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["trip", listId] });
+		},
+	});
 
-  return (
-    <Command shouldFilter={false}>
-      <CommandInput
-        value={searchTerm}
-        onValueChange={setSearchTerm}
-        placeholder="Search items (e.g. 'T-shirt' or 'Macbook')..."
-      />
-      <CommandList>
-        {results && !results.length && (
-          <CommandEmpty>
-            <div className="flex flex-col gap-2 justify-center">
-              <span>No results found for {debouncedSearch}</span>
+	return (
+		<Command shouldFilter={false}>
+			<CommandInput
+				value={searchTerm}
+				onValueChange={setSearchTerm}
+				placeholder="Search items (e.g. 'T-shirt' or 'Macbook')..."
+			/>
+			<CommandList>
+				{results && !results.length && (
+					<CommandEmpty>
+						<div className="flex flex-col gap-2 justify-center">
+							<span>No results found for {debouncedSearch}</span>
 
-              <AddCustomItemDialog
-                initialName={debouncedSearch}
-                listId={listId}
-                onClear={() => setSearchTerm("")}
-              />
-            </div>
-          </CommandEmpty>
-        )}
-        {results && results.length > 0 && (
-          <CommandGroup heading="Suggestions">
-            {debouncedSearch.length >= 2 &&
-              results?.map((item) => (
-                <CommandItem
-                  className="w-full"
-                  disabled={isPending}
-                  key={item.id}
-                  onSelect={() => {
-                    addItem({
-                      listId,
-                      name: item.searchTerm,
-                      weightG: item.suggestedWeightG,
-                      category: item.category,
-                      quantity: 1,
-                      isEstimated: true,
-                    });
-                    setSearchTerm("");
-                  }}
-                >
-                  {item.searchTerm}
-                  <span className="text-muted-foreground font-mono">
-                    {item.suggestedWeightG}g
-                  </span>
-                </CommandItem>
-              ))}
-          </CommandGroup>
-        )}
-      </CommandList>
-    </Command>
-  );
+							<AddCustomItemDialog
+								initialName={debouncedSearch}
+								listId={listId}
+								onClear={() => setSearchTerm("")}
+							/>
+						</div>
+					</CommandEmpty>
+				)}
+				{results && results.length > 0 && (
+					<CommandGroup heading="Suggestions">
+						{debouncedSearch.length >= 2 &&
+							results?.map((item) => (
+								<CommandItem
+									className="w-full"
+									disabled={isPending}
+									key={item.id}
+									onSelect={() => {
+										addItem({
+											listId,
+											name: item.searchTerm,
+											weightG: item.suggestedWeightG,
+											category: item.category,
+											quantity: 1,
+											isEstimated: true,
+										});
+										setSearchTerm("");
+									}}
+								>
+									{item.searchTerm}
+									<span className="text-muted-foreground font-mono">
+										{item.suggestedWeightG}g
+									</span>
+								</CommandItem>
+							))}
+					</CommandGroup>
+				)}
+			</CommandList>
+		</Command>
+	);
 };

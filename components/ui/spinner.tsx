@@ -3,20 +3,20 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@/lib/utils";
 
 function Spinner({
-  className,
-  strokeWidth = 2,
-  ...props
+	className,
+	strokeWidth = 2,
+	...props
 }: React.ComponentProps<"svg">) {
-  return (
-    <HugeiconsIcon
-      icon={Loading03Icon}
-      strokeWidth={Number(strokeWidth)}
-      role="status"
-      aria-label="Loading"
-      className={cn("size-4 animate-spin", className)}
-      {...props}
-    />
-  );
+	return (
+		<HugeiconsIcon
+			icon={Loading03Icon}
+			strokeWidth={Number(strokeWidth)}
+			role="status"
+			aria-label="Loading"
+			className={cn("size-4 animate-spin", className)}
+			{...props}
+		/>
+	);
 }
 
 export { Spinner };
