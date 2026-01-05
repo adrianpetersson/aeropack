@@ -24,7 +24,7 @@ export const Header = ({ trip }: HeaderProps) => {
 	const percentage = Math.min((totalWeight / limit) * 100, 100);
 
 	return (
-		<div className="flex flex-col space-y-4 rounded-md text-white">
+		<section className="flex flex-col space-y-4 rounded-md text-white">
 			<div className="rounded-md bg-primary p-4">
 				<h1 className="font-bold text-3xl">{trip.title} </h1>
 			</div>
@@ -47,6 +47,6 @@ export const Header = ({ trip }: HeaderProps) => {
 					</div>
 				</CardContent>
 			</Card>
-		</div>
+		</section>
 	);
 };

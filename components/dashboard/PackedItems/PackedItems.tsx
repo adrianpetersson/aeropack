@@ -31,7 +31,6 @@ export const PackedItems = ({
 	return (
 		<div className="grid gap-4">
 			<div className="flex-col items-center justify-between">
-				<h2 className="font-semibold text-xl">Add Gear</h2>
 				<div className="relative flex w-full items-start">
 					<Searchbar listId={packingList.id} />
 					<SortingDialog sortBy={sortBy} setSortBy={setSortBy} />
