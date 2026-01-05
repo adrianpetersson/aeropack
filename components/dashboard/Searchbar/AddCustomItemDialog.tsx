@@ -26,11 +26,13 @@ export function AddCustomItemDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger>
-				<Button variant="outline" size="sm">
-					<HugeiconsIcon icon={Plus} className="mr-2 h-4 w-4" /> Add Custom
-				</Button>
-			</DialogTrigger>
+			<DialogTrigger
+				render={
+					<Button className="m-auto md:w-1/4" variant="outline" size="sm">
+						<HugeiconsIcon icon={Plus} className="mr-2 h-4 w-4" /> Add Custom
+					</Button>
+				}
+			/>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Add Custom Gear</DialogTitle>
