@@ -1,3 +1,4 @@
+import { useRouter } from "@bprogress/next/app";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { deletePackingListAction } from "@/actions/packing-lists";
@@ -25,14 +26,17 @@ export const DeletePackingListDialog = ({
 	packingListId,
 }: DeleteTripDialogProps) => {
 	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	const { mutate: deletePackingList } = useMutation({
 		mutationFn: () => deletePackingListAction(packingListId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["packingLists"] });
 			toast.success("Trip deleted successfully!");
+			router.push("/");
 		},
-		onError: () => {
+		onError: (error) => {
+			console.log(error);
 			toast.error("Failed to delete your trip. Please try again.");
 		},
 	});

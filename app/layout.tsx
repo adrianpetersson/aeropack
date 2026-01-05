@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ProgressProvider } from "@bprogress/next/app";
 import { Toaster } from "@/components/ui/sonner";
+import ProgressClientProvider from "@/lib/providers/progress-client-provider";
 import { TanstackProvider } from "@/lib/providers/tanstack-provider";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
@@ -31,7 +33,9 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<TanstackProvider>{children}</TanstackProvider>
+				<ProgressClientProvider>
+					<TanstackProvider>{children}</TanstackProvider>
+				</ProgressClientProvider>
 				<Toaster />
 			</body>
 		</html>

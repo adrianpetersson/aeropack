@@ -52,8 +52,4 @@ export async function deletePackingListAction(id: PackingListWithItems["id"]) {
 		console.error("Failed to delete list:", error);
 		throw new Error("Database deletion failed");
 	}
-
-	revalidatePath("/");
-
-	redirect("/");
 }
