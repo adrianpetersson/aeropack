@@ -19,7 +19,7 @@ export default async function TripPage({
 	});
 
 	return (
-		<main className="max-w-4xl mx-auto md:p-6">
+		<main className="mx-auto max-w-4xl md:p-6">
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<TripDashboard id={id} />
 			</HydrationBoundary>

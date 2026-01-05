@@ -14,20 +14,20 @@ export const ItemCard = ({ item }: ItemCardV2Props) => {
 	const [expanded, setExpanded] = useState(false);
 	return (
 		<article
-			className={`group flex flex-col gap-4 p-4 border-b transition-all duration-200 ${
+			className={`group flex flex-col gap-4 border-b p-4 transition-all duration-200 ${
 				expanded
 					? "bg-blue-50/50 shadow-sm"
-					: "bg-white border-slate-100 hover:bg-slate-50/50 hover:border-slate-200"
+					: "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50/50"
 			}`}
 		>
-			<div className="flex items-center justify-between w-full ">
+			<div className="flex w-full items-center justify-between">
 				<div className="flex items-center gap-4">
 					<ItemIcon category={item.category} />
 					<div className="flex flex-col">
 						<h4 className="font-semibold text-slate-900 text-sm capitalize">
 							{item.name}
 						</h4>
-						<span className="text-xs text-slate-400 capitalize">
+						<span className="text-slate-400 text-xs capitalize">
 							{item.category}
 						</span>
 					</div>
@@ -39,17 +39,17 @@ export const ItemCard = ({ item }: ItemCardV2Props) => {
 						</data>
 						<data
 							value={item.quantity}
-							className="text-tiny text-slate-400 font-medium"
+							className="font-medium text-slate-400 text-tiny"
 						>
 							{item.quantity > 1 ? `Qty: ${item.quantity}` : "Single Item"}
 						</data>
 					</div>
 					<button
 						onClick={() => setExpanded(!expanded)}
-						className={`p-2 rounded-lg transition-all duration-200 ${
+						className={`rounded-lg p-2 transition-all duration-200 ${
 							expanded
 								? "bg-blue-100 text-blue-600"
-								: "text-slate-400 hover:bg-slate-100 hover:text-slate-600 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+								: "text-slate-400 opacity-100 hover:bg-slate-100 hover:text-slate-600 lg:opacity-0 lg:group-hover:opacity-100"
 						}`}
 						type="button"
 						aria-expanded={expanded}
@@ -57,7 +57,7 @@ export const ItemCard = ({ item }: ItemCardV2Props) => {
 					>
 						<HugeiconsIcon
 							icon={expanded ? Down : PenIcon}
-							className={`w-4 h-4 transition-transform duration-200 ${
+							className={`h-4 w-4 transition-transform duration-200 ${
 								expanded ? "rotate-180" : ""
 							}`}
 						/>
@@ -66,7 +66,7 @@ export const ItemCard = ({ item }: ItemCardV2Props) => {
 			</div>
 			{expanded && (
 				<section
-					className="w-full animate-in fade-in slide-in-from-top-2 duration-200"
+					className="fade-in slide-in-from-top-2 w-full animate-in duration-200"
 					aria-label="Edit item form"
 				>
 					<UpdateItemForm

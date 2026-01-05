@@ -11,7 +11,7 @@ export const IconBadge = ({
 	return (
 		<div
 			className={cn(
-				"h-10 w-10 rounded-md bg-slate-50 flex items-center justify-center border border-slate-100",
+				"flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-slate-50",
 				className,
 			)}
 		>

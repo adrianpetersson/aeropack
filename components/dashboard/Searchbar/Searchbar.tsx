@@ -44,7 +44,7 @@ export const Searchbar = ({ listId }: { listId: string }) => {
 			<CommandList>
 				{results && !results.length && (
 					<CommandEmpty>
-						<div className="flex flex-col gap-2 justify-center">
+						<div className="flex flex-col justify-center gap-2">
 							<span>No results found for {debouncedSearch}</span>
 
 							<AddCustomItemDialog
@@ -76,7 +76,7 @@ export const Searchbar = ({ listId }: { listId: string }) => {
 									}}
 								>
 									{item.searchTerm}
-									<span className="text-muted-foreground font-mono">
+									<span className="font-mono text-muted-foreground">
 										{item.suggestedWeightG}g
 									</span>
 								</CommandItem>

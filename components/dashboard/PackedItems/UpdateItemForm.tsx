@@ -142,10 +142,10 @@ export const UpdateItemForm = ({
 
 	return (
 		<form
-			className={`w-full flex flex-col gap-4 ${
+			className={`flex w-full flex-col gap-4 ${
 				isCreateMode
 					? ""
-					: "border border-dashed p-3 sm:p-4 bg-blue-50/30 rounded-lg"
+					: "rounded-lg border border-dashed bg-blue-50/30 p-3 sm:p-4"
 			}`}
 			id="update-item-form"
 			onSubmit={control.handleSubmit(onSubmit)}
@@ -154,7 +154,7 @@ export const UpdateItemForm = ({
 				className={`w-full ${
 					isCreateMode
 						? "flex flex-col gap-4"
-						: "grid grid-cols-1 lg:grid-cols-2 gap-4"
+						: "grid grid-cols-1 gap-4 lg:grid-cols-2"
 				}`}
 			>
 				<FieldGroup
@@ -167,11 +167,11 @@ export const UpdateItemForm = ({
 						control={control}
 						render={({ field, fieldState }) => (
 							<Field
-								className="flex-2 min-w-0"
+								className="min-w-0 flex-2"
 								data-invalid={fieldState.invalid}
 							>
 								<FieldLabel
-									className="text-tiny font-bold tracking-wider text-slate-400 uppercase"
+									className="font-bold text-slate-400 text-tiny uppercase tracking-wider"
 									htmlFor="item-name"
 								>
 									Name
@@ -194,14 +194,14 @@ export const UpdateItemForm = ({
 						control={control}
 						render={({ field, fieldState }) => (
 							<Field
-								className={`flex-1 min-w-0 ${
+								className={`min-w-0 flex-1 ${
 									isCreateMode ? "" : "sm:max-w-40"
 								}`}
 								data-invalid={fieldState.invalid}
 							>
 								<FieldContent>
 									<FieldLabel
-										className="text-tiny font-bold tracking-wider text-slate-400 uppercase"
+										className="font-bold text-slate-400 text-tiny uppercase tracking-wider"
 										htmlFor="ItemCategory"
 									>
 										Category
@@ -243,9 +243,9 @@ export const UpdateItemForm = ({
 						name="weightG"
 						control={control}
 						render={({ field, fieldState }) => (
-							<Field className="flex-1 " data-invalid={fieldState.invalid}>
+							<Field className="flex-1" data-invalid={fieldState.invalid}>
 								<FieldLabel
-									className="text-tiny font-bold tracking-wider text-slate-400 uppercase"
+									className="font-bold text-slate-400 text-tiny uppercase tracking-wider"
 									htmlFor="item-weight"
 								>
 									Weight (g)
@@ -263,7 +263,7 @@ export const UpdateItemForm = ({
 									aria-invalid={fieldState.invalid}
 									placeholder="2000"
 									autoComplete="off"
-									className="tabular-nums font-mono"
+									className="font-mono tabular-nums"
 								/>
 								{fieldState.invalid && (
 									<FieldError errors={[fieldState.error]} />
@@ -277,7 +277,7 @@ export const UpdateItemForm = ({
 						render={({ field, fieldState }) => (
 							<Field className="w-20 sm:w-24" data-invalid={fieldState.invalid}>
 								<FieldLabel
-									className="text-tiny font-bold tracking-wider text-slate-400 uppercase"
+									className="font-bold text-slate-400 text-tiny uppercase tracking-wider"
 									htmlFor="item-quantity"
 								>
 									Qty
@@ -289,7 +289,7 @@ export const UpdateItemForm = ({
 									aria-invalid={fieldState.invalid}
 									placeholder="1"
 									autoComplete="off"
-									className="tabular-nums font-mono"
+									className="font-mono tabular-nums"
 								/>
 								{fieldState.invalid && (
 									<FieldError errors={[fieldState.error]} />
@@ -301,8 +301,8 @@ export const UpdateItemForm = ({
 			</div>
 
 			<div
-				className={`flex justify-end items-center gap-2 ${
-					isCreateMode ? "pt-2" : "pt-2 border-t border-slate-200/50"
+				className={`flex items-center justify-end gap-2 ${
+					isCreateMode ? "pt-2" : "border-slate-200/50 border-t pt-2"
 				}`}
 			>
 				{isUpdateMode && (
@@ -313,10 +313,10 @@ export const UpdateItemForm = ({
 								listId,
 							})
 						}
-						className="mr-auto p-2 rounded-lg transition-all duration-200 text-red-400 hover:text-white hover:bg-red-400"
+						className="mr-auto rounded-lg p-2 text-red-400 transition-all duration-200 hover:bg-red-400 hover:text-white"
 						type="button"
 					>
-						<HugeiconsIcon className="w-4 h-4" icon={Trash} />
+						<HugeiconsIcon className="h-4 w-4" icon={Trash} />
 					</button>
 				)}
 				<Button

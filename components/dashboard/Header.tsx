@@ -24,14 +24,14 @@ export const Header = ({ trip }: HeaderProps) => {
 	const percentage = Math.min((totalWeight / limit) * 100, 100);
 
 	return (
-		<div className="  text-white flex flex-col space-y-4 rounded-md">
-			<div className="bg-primary rounded-md p-4">
-				<h1 className="text-3xl font-bold">{trip.title} </h1>
+		<div className="flex flex-col space-y-4 rounded-md text-white">
+			<div className="rounded-md bg-primary p-4">
+				<h1 className="font-bold text-3xl">{trip.title} </h1>
 			</div>
 
-			<Card className="border-slate-200 md:border-10 border-4 shadow-md">
+			<Card className="border-4 border-slate-200 shadow-md md:border-10">
 				<CardContent className="border-slate-100 md:p-4">
-					<div className="flex w-full justify-between items-end space-x-3">
+					<div className="flex w-full items-end justify-between space-x-3">
 						<Progress
 							className={`w-full pb-3 ${getWeightProgressColor(percentage)}`}
 							value={percentage}
@@ -43,7 +43,7 @@ export const Header = ({ trip }: HeaderProps) => {
 								Carry-on Limit {gramsToKg(limit)}{" "}
 							</ProgressLabel>
 						</Progress>
-						<IconBadge className="md:flex hidden" icon={Airplane} />
+						<IconBadge className="hidden md:flex" icon={Airplane} />
 					</div>
 				</CardContent>
 			</Card>

@@ -18,7 +18,7 @@ export default function TripDashboard({ id }: { id: string }) {
 	}
 
 	return (
-		<div className="relative space-y-8 border md:p-6 p-4 rounded-lg bg-white">
+		<div className="relative space-y-8 rounded-lg border bg-white p-4 md:p-6">
 			<Header trip={trip} />
 
 			<AIWeightEstimator packingList={trip} />

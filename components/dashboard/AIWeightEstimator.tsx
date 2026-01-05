@@ -82,16 +82,16 @@ export function AIWeightEstimator({ packingList }: AIWeightEstimatorProps) {
 
 	return (
 		<div className="relative overflow-hidden rounded-lg border border-purple-200 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-indigo-950/20">
-			<div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[size:20px_20px]" />
+			<div className="absolute inset-0 bg-[size:20px_20px] bg-grid-slate-900/[0.04]" />
 			<div className="relative flex items-center justify-between gap-4 p-4">
 				<div className="flex-1">
-					<div className="flex items-center gap-2 mb-1">
+					<div className="mb-1 flex items-center gap-2">
 						<span className="text-2xl">✨</span>
 						<h3 className="font-semibold text-purple-900 dark:text-purple-100">
 							AI Gear Analysis
 						</h3>
 					</div>
-					<p className="text-sm text-purple-700 dark:text-purple-300">
+					<p className="text-purple-700 text-sm dark:text-purple-300">
 						{notEstimatedItemsCount} item
 						{notEstimatedItemsCount !== 1 ? "s" : ""} ready for AI weight
 						estimation
@@ -101,7 +101,7 @@ export function AIWeightEstimator({ packingList }: AIWeightEstimatorProps) {
 					onClick={handleAIAnalysis}
 					disabled={isAnalyzing}
 					size="lg"
-					className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/30 transition-all hover:shadow-xl hover:shadow-purple-500/40 disabled:opacity-50"
+					className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30 transition-all hover:from-purple-700 hover:to-blue-700 hover:shadow-purple-500/40 hover:shadow-xl disabled:opacity-50"
 				>
 					{isAnalyzing ? (
 						<>
