@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/db/db";
 import { packingLists } from "@/db/schema";
+import type { PackingListWithItems } from "@/db/types";
 
 export async function getPackingListsAction(id: string) {
 	const result = await db.query.packingLists.findFirst({
@@ -42,4 +43,17 @@ export async function createPackingListAction(title: string) {
 	revalidatePath("/");
 
 	redirect(`/trips/${newListId}`);
+}
+
+export async function deletePackingListAction(id: PackingListWithItems["id"]) {
+	try {
+		await db.delete(packingLists).where(eq(packingLists.id, id));
+	} catch (error) {
+		console.error("Failed to delete list:", error);
+		throw new Error("Database deletion failed");
+	}
+
+	revalidatePath("/");
+
+	redirect("/");
 }

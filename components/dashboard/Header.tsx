@@ -4,6 +4,7 @@ import { gramsToKg } from "@/utils/format.utils";
 import { IconBadge } from "../IconBadge";
 import { Card, CardContent } from "../ui/card";
 import { Progress, ProgressLabel } from "../ui/progress";
+import { TripSettings } from "./TripSettings";
 
 interface HeaderProps {
 	trip: PackingListWithItems;
@@ -25,8 +26,9 @@ export const Header = ({ trip }: HeaderProps) => {
 
 	return (
 		<section className="flex flex-col space-y-4 rounded-md text-white">
-			<div className="rounded-md bg-primary p-4">
+			<div className="flex items-center justify-between rounded-md bg-primary p-4">
 				<h1 className="font-bold text-3xl">{trip.title} </h1>
+				<TripSettings trip={trip} />
 			</div>
 
 			<Card className="border-4 border-slate-200 shadow-md md:border-10">
