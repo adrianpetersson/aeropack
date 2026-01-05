@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { SearchIcon, Tick02Icon, XCircle } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Command as CommandPrimitive } from "cmdk";
 import type * as React from "react";
@@ -62,12 +62,16 @@ function CommandDialog({
 
 function CommandInput({
 	className,
+	value,
+	onValueChange,
 	...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
 	return (
 		<div data-slot="command-input-wrapper" className="px-1 pb-0">
 			<InputGroup className="h-10! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
 				<CommandPrimitive.Input
+					value={value}
+					onValueChange={onValueChange}
 					data-slot="command-input"
 					className={cn(
 						"w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
@@ -82,6 +86,21 @@ function CommandInput({
 						className="size-4 shrink-0 opacity-50"
 					/>
 				</InputGroupAddon>
+				{value && (
+					<InputGroupAddon align={"inline-end"}>
+						<button
+							type="button"
+							onClick={() => onValueChange?.("")}
+							className="mr-2 cursor-pointer"
+						>
+							<HugeiconsIcon
+								icon={XCircle}
+								strokeWidth={2}
+								className={`size-4 shrink-0 opacity-50 ${value && "text-red-500"} transition-opacity hover:opacity-100`}
+							/>
+						</button>
+					</InputGroupAddon>
+				)}
 			</InputGroup>
 		</div>
 	);
