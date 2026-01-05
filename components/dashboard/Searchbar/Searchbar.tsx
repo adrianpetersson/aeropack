@@ -37,6 +37,7 @@ export const Searchbar = ({ listId }: { listId: string }) => {
 	return (
 		<Command shouldFilter={false}>
 			<CommandInput
+				className=""
 				value={searchTerm}
 				onValueChange={setSearchTerm}
 				placeholder="Search items (e.g. 'T-shirt' or 'Macbook')..."
