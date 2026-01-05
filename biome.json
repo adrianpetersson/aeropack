@@ -16,6 +16,12 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
+			"correctness": {
+				"noUnusedImports": {
+					"level": "error",
+					"fix": "safe"
+				}
+			},
 			"recommended": true,
 			"nursery": {
 				"useSortedClasses": {
