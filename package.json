@@ -43,6 +43,7 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"drizzle-kit": "^0.31.8",
+		"lefthook": "^2.0.13",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}
