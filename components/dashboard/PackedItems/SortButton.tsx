@@ -2,14 +2,16 @@
 
 import { Sorting01FreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
 import {
 	DropdownMenu,
-	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuLabel,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { SortBy } from "./PackedItems";
@@ -21,8 +23,10 @@ export function SortingDialog({
 	setSortBy: (value: SortBy) => void;
 	sortBy: SortBy;
 }) {
+	//TODO: revisit this, in shadcn example it seems like item selects closes the menu automatically
+	const [open, setOpen] = useState(false);
 	return (
-		<DropdownMenu>
+		<DropdownMenu open={open} onOpenChange={setOpen}>
 			<DropdownMenuTrigger
 				render={
 					<Button
@@ -39,26 +43,22 @@ export function SortingDialog({
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>Sort items by</DropdownMenuLabel>
 				</DropdownMenuGroup>
-				<DropdownMenuGroup>
-					<DropdownMenuCheckboxItem
-						checked={sortBy === "name"}
-						onCheckedChange={() => setSortBy("name")}
-					>
+				<DropdownMenuSeparator />
+				<DropdownMenuRadioGroup
+					value={sortBy}
+					onValueChange={(value) => {
+						setSortBy(value);
+						setOpen(false);
+					}}
+				>
+					<DropdownMenuRadioItem value="name">
 						Name (default)
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuCheckboxItem
-						checked={sortBy === "weight"}
-						onCheckedChange={() => setSortBy("weight")}
-					>
-						Weight
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuCheckboxItem
-						checked={sortBy === "category"}
-						onCheckedChange={() => setSortBy("category")}
-					>
+					</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="weight">Weight</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="category">
 						Category
-					</DropdownMenuCheckboxItem>
-				</DropdownMenuGroup>
+					</DropdownMenuRadioItem>
+				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
