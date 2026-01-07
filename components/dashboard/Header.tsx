@@ -1,7 +1,8 @@
 import { Airplane } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { PackingListWithItems } from "@/db/types";
 import { gramsToKg } from "@/utils/format.utils";
-import { IconBadge } from "../IconBadge";
+import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Progress, ProgressLabel } from "../ui/progress";
 import { TripSettings } from "./TripSettings";
@@ -35,7 +36,7 @@ export const Header = ({ trip }: HeaderProps) => {
 				<CardContent className="border-slate-100 md:p-4">
 					<div className="flex w-full items-end justify-between space-x-3">
 						<Progress
-							className={`w-full pb-3 ${getWeightProgressColor(percentage)}`}
+							className={`w-full pb-2 ${getWeightProgressColor(percentage)}`}
 							value={percentage}
 						>
 							<ProgressLabel className="text-primary">
@@ -45,7 +46,18 @@ export const Header = ({ trip }: HeaderProps) => {
 								Carry-on Limit {gramsToKg(limit)}{" "}
 							</ProgressLabel>
 						</Progress>
-						<IconBadge className="hidden md:flex" icon={Airplane} />
+						<Button
+							size="lg"
+							className="group relative overflow-hidden bg-blue-600 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95"
+						>
+							<span className="flex items-center gap-2">
+								Ready for Takeoff
+								<HugeiconsIcon
+									icon={Airplane}
+									className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+								/>
+							</span>
+						</Button>
 					</div>
 				</CardContent>
 			</Card>

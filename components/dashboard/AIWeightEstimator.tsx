@@ -1,5 +1,7 @@
 "use client";
 
+import { AiMagicIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -97,62 +99,8 @@ export function AIWeightEstimator({ packingList }: AIWeightEstimatorProps) {
 						estimation
 					</p>
 				</div>
-				<Button
-					onClick={handleAIAnalysis}
-					disabled={isAnalyzing}
-					size="lg"
-					className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30 transition-all hover:from-purple-700 hover:to-blue-700 hover:shadow-purple-500/40 hover:shadow-xl disabled:opacity-50"
-				>
-					{isAnalyzing ? (
-						<>
-							{/* <svg
-                className="animate-spin h-4 w-4 mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg> */}
-							Analyzing...
-						</>
-					) : (
-						<>
-							{/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2"
-              >
-                <path d="M12 2v4" />
-                <path d="m16.2 7.8 2.9-2.9" />
-                <path d="M18 12h4" />
-                <path d="m16.2 16.2 2.9 2.9" />
-                <path d="M12 18v4" />
-                <path d="m4.9 19.1 2.9-2.9" />
-                <path d="M2 12h4" />
-                <path d="m4.9 4.9 2.9 2.9" />
-              </svg> */}
-							Analyze Weights
-						</>
-					)}
+				<Button onClick={handleAIAnalysis} disabled={isAnalyzing} size="lg">
+					AI Weight Analysis <HugeiconsIcon icon={AiMagicIcon} />
 				</Button>
 			</div>
 		</div>

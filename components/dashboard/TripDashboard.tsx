@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getPackingListsAction } from "@/actions/packing-lists";
-import { AIWeightEstimator } from "./AIWeightEstimator";
+import notFound from "@/app/not-found";
 import { Header } from "./Header";
 import { PackedItems } from "./PackedItems/PackedItems";
 
@@ -14,15 +14,12 @@ export default function TripDashboard({ id }: { id: string }) {
 	});
 
 	if (!trip) {
-		return <div>Loading...</div>;
+		return notFound();
 	}
 
 	return (
 		<div className="relative space-y-4 rounded-lg p-4 md:p-6">
 			<Header trip={trip} />
-
-			<AIWeightEstimator packingList={trip} />
-
 			<PackedItems packingList={trip} />
 		</div>
 	);
