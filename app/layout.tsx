@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/sonner";
 import ProgressClientProvider from "@/lib/providers/progress-client-provider";
 import { TanstackProvider } from "@/lib/providers/tanstack-provider";
@@ -33,7 +34,10 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<ProgressClientProvider>
-					<TanstackProvider>{children}</TanstackProvider>
+					<TanstackProvider>
+						<Header />
+						{children}
+					</TanstackProvider>
 				</ProgressClientProvider>
 				<Toaster />
 			</body>
