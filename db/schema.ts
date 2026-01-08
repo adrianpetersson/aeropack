@@ -8,6 +8,7 @@ import {
 	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
+import { user } from "./auth-schema";
 
 // -----------------------------------------------------------------------------
 // 1. Weight Library (Global Knowledge Base of generic item weights)
@@ -25,11 +26,14 @@ export const weightLibrary = pgTable("weight_library", {
 // -----------------------------------------------------------------------------
 export const packingLists = pgTable("packing_lists", {
 	id: uuid("id").primaryKey().defaultRandom(),
+	slug: text("slug").notNull().unique(),
 	title: text("title").notNull(), // e.g. "Tokyo 2026"
 	maxWeightG: integer("max_weight_g").notNull(), // e.g. 7000 (7kg)
-	maxDimensions: text("max_dimensions"), // e.g. "55x40x20"
 	bagWeightG: integer("bag_weight_g").default(0).notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
 });
 
 // Define relations so you can easily fetch a List WITH its Items

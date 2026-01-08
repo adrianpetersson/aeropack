@@ -22,6 +22,13 @@
 			"when": 1767818922784,
 			"tag": "0002_redundant_hercules",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1767895293454,
+			"tag": "0003_talented_randall_flagg",
+			"breakpoints": true
 		}
 	]
 }
