@@ -1,7 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: might be used later */
-import { db } from "./db";
-import { listItems, packingLists } from "./schema";
-
 async function main() {
 	console.log("Emptying library...");
 	// Clear existing to avoid unique constraint errors during dev
@@ -197,23 +193,24 @@ async function main() {
 
 	//  await db.insert(weightLibrary).values(items);
 
-	const [newTrip] = await db
-		.insert(packingLists)
-		.values({
-			id: "00000000-0000-0000-0000-000000000000", // Fixed ID for testing
-			title: "Tokyo Trip",
-			maxWeightG: 7000,
-			bagWeightG: 1200,
-		})
-		.returning();
+	// const [newTrip] = await db
+	// 	.insert(packingLists)
+	// 	.values({
 
-	await db.insert(listItems).values({
-		listId: newTrip.id,
-		name: "Testing Laptop",
-		weightG: 1400,
-		quantity: 1,
-		isWorn: false,
-	});
+	// 		id: "00000000-0000-0000-0000-000000000000", // Fixed ID for testing
+	// 		title: "Tokyo Trip",
+	// 		maxWeightG: 7000,
+	// 		bagWeightG: 1200,
+	// 	})
+	// 	.returning();
+
+	// await db.insert(listItems).values({
+	// 	listId: newTrip.id,
+	// 	name: "Testing Laptop",
+	// 	weightG: 1400,
+	// 	quantity: 1,
+	// 	isWorn: false,
+	// });
 
 	console.log("Seeding complete! ✈️");
 }
