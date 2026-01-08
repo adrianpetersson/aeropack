@@ -212,7 +212,7 @@ async function main() {
 	// 	isWorn: false,
 	// });
 
-	console.log("Seeding complete! ✈️");
+	console.log("Seeding complete! ✈️", items);
 }
 
 main().catch((err) => {
