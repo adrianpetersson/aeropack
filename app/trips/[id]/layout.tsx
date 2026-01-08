@@ -3,5 +3,5 @@ export default function TripLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <section className="mx-auto h-screen max-w-4xl">{children}</section>;
+	return <section>{children}</section>;
 }

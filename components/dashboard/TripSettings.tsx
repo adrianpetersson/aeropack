@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "@bprogress/next/app";
 import { Settings01FreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
@@ -9,13 +10,16 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { PackingListWithItems } from "@/db/types";
+import { signOut } from "@/lib/auth-client";
 import { DeletePackingListDialog } from "./DeletePackingListDialog";
 
 export function TripSettings({ trip }: { trip: PackingListWithItems }) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const router = useRouter();
 
 	return (
 		<>
@@ -37,6 +41,20 @@ export function TripSettings({ trip }: { trip: PackingListWithItems }) {
 						<DropdownMenuLabel>My trip</DropdownMenuLabel>
 					</DropdownMenuGroup>
 					<DropdownMenuGroup>
+						<DropdownMenuItem
+							onClick={() =>
+								signOut({
+									fetchOptions: {
+										onSuccess: () => {
+											router.push("/");
+										},
+									},
+								})
+							}
+						>
+							Sign out
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() => setShowDeleteDialog(true)}
 							variant="destructive"

@@ -36,7 +36,9 @@ export default function RootLayout({
 				<ProgressClientProvider>
 					<TanstackProvider>
 						<Header />
-						{children}
+						<main className="mx-auto mt-8 flex min-h-screen w-full max-w-4xl flex-1 flex-col px-4">
+							{children}
+						</main>
 					</TanstackProvider>
 				</ProgressClientProvider>
 				<Toaster />
