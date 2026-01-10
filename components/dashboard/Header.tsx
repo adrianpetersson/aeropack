@@ -1,11 +1,9 @@
-import { Airplane } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import type { PackingListWithItems } from "@/db/types";
 import { gramsToKg } from "@/utils/format.utils";
-import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Progress, ProgressLabel } from "../ui/progress";
 import { SidebarTrigger } from "../ui/sidebar";
+import { AiAnalyzeButton } from "./AiAnalyzeButton";
 import { TripSettings } from "./TripSettings";
 
 interface HeaderProps {
@@ -51,18 +49,7 @@ export const Header = ({ trip }: HeaderProps) => {
 								Carry-on Limit {gramsToKg(limit)}{" "}
 							</ProgressLabel>
 						</Progress>
-						<Button
-							size="lg"
-							className="group relative overflow-hidden bg-blue-600 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95"
-						>
-							<span className="flex items-center gap-2">
-								Ready for Takeoff
-								<HugeiconsIcon
-									icon={Airplane}
-									className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-								/>
-							</span>
-						</Button>
+						<AiAnalyzeButton packingList={trip} />
 					</div>
 				</CardContent>
 			</Card>

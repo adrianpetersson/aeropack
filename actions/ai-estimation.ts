@@ -3,6 +3,7 @@
 import { generateText, Output } from "ai";
 import { z } from "zod";
 import { geminiFlash } from "@/lib/ai";
+import { bulkUpdateItemsAction } from "./items";
 
 type EstimateResult =
 	| { success: true; data: Record<string, number> }
@@ -55,7 +56,15 @@ ${items
 			}
 		}
 
-		console.log("AI Weight Estimates:", output.estimates);
+		const updatedItems = items.map((item) => ({
+			...item,
+			weightG: estimateMap[item.id],
+			isEstimated: true,
+		}));
+
+		console.log("Estimated Weights:", estimateMap);
+
+		await bulkUpdateItemsAction(updatedItems);
 
 		return { success: true, data: estimateMap };
 	} catch (error) {

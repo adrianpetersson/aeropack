@@ -43,6 +43,29 @@ export async function updateItemAction(item: Omit<ListItems, "isWorn">) {
 	revalidatePath(`/trips/${item.listId}`);
 }
 
+export async function bulkUpdateItemsAction(items: Partial<ListItems>[]) {
+	if (items.length === 0) return;
+
+	await db
+		.insert(listItems)
+		.values(
+			items.map((item) => ({
+				category: "misc",
+				listId: "00000000-0000-0000-0000-000000000000",
+				name: "Unnamed Item",
+				weightG: 100,
+				...item,
+			})),
+		)
+		.onConflictDoUpdate({
+			target: listItems.id,
+			set: {
+				isEstimated: sql`excluded.is_estimated`,
+				weightG: sql`excluded.weight_g`,
+			},
+		});
+}
+
 export async function bulkDeleteItemsAction({
 	ids,
 	listId,
