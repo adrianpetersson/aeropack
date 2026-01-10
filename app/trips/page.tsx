@@ -1,6 +1,4 @@
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getUserPackingListsAction } from "@/actions/packing-lists";
-import { UserPackingLists } from "@/components/dashboard/UserPackingLists";
 import { getQueryClient } from "@/lib/get-query-client";
 
 export default async function TripDashboardPage() {
@@ -12,9 +10,5 @@ export default async function TripDashboardPage() {
 		staleTime: 5 * 60 * 1000,
 	});
 
-	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<UserPackingLists />
-		</HydrationBoundary>
-	);
+	return <div></div>;
 }
