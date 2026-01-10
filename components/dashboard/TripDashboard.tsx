@@ -18,7 +18,7 @@ export default function TripDashboard({ id }: { id: string }) {
 	}
 
 	return (
-		<div className="relative space-y-4 rounded-lg p-4 md:p-6">
+		<div className="relative space-y-4 rounded-lg px-4 py-4 md:pr-4 md:pl-0">
 			<Header trip={trip} />
 			<PackedItems packingList={trip} />
 		</div>

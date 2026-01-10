@@ -35,9 +35,9 @@ export async function getUserPackingListsAction() {
 		orderBy: (packingLists, { desc }) => [desc(packingLists.createdAt)],
 	});
 
-	if (results.length === 1) {
-		redirect(`/trips/${results[0].id}`);
-	}
+	// if (results.length === 1) {
+	// 	redirect(`/trips/${results[0].id}`);
+	// }
 
 	return results;
 }

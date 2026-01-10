@@ -5,6 +5,7 @@ import { gramsToKg } from "@/utils/format.utils";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Progress, ProgressLabel } from "../ui/progress";
+import { SidebarTrigger } from "../ui/sidebar";
 import { TripSettings } from "./TripSettings";
 
 interface HeaderProps {
@@ -28,7 +29,11 @@ export const Header = ({ trip }: HeaderProps) => {
 	return (
 		<section className="flex flex-col space-y-4 rounded-md text-white">
 			<div className="flex items-center justify-between rounded-md bg-primary p-4">
-				<h1 className="font-bold text-3xl">{trip.title} </h1>
+				<div className="flex items-center space-x-4">
+					<SidebarTrigger />
+					<h1 className="font-bold text-3xl">{trip.title} </h1>
+				</div>
+
 				<TripSettings trip={trip} />
 			</div>
 

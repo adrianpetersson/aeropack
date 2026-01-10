@@ -4,7 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { getUserPackingListsAction } from "@/actions/packing-lists";
 import notFound from "@/app/not-found";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import {
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+} from "../ui/sidebar";
 
 export const UserPackingLists = () => {
 	const { data: trips, isLoading } = useQuery({
@@ -21,22 +25,18 @@ export const UserPackingLists = () => {
 		return notFound();
 	}
 	return (
-		<div>
-			<h1 className="mb-4 font-bold text-2xl">Your Packing Lists</h1>
-			<div className="space-y-4 px-4 lg:max-w-1/3">
-				{trips?.map((trip) => (
-					<Link key={trip.id} href={`/trips/${trip.id}`}>
-						<Card>
-							<CardHeader>
-								<h2 className="font-semibold text-lg">{trip.title}</h2>
-							</CardHeader>
-							<CardContent>
-								<p>Max Weight: {trip.maxWeightG} g</p>
-							</CardContent>
-						</Card>
-					</Link>
-				))}
-			</div>
-		</div>
+		<SidebarMenuSub>
+			{trips?.map((trip) => (
+				<SidebarMenuSubItem key={trip.id}>
+					<SidebarMenuSubButton
+						render={
+							<Link href={`/trips/${trip.id}`} className="hover:bg-gray-100">
+								{trip.title}
+							</Link>
+						}
+					/>
+				</SidebarMenuSubItem>
+			))}
+		</SidebarMenuSub>
 	);
 };

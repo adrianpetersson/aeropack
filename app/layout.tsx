@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/sonner";
 import ProgressClientProvider from "@/lib/providers/progress-client-provider";
 import { TanstackProvider } from "@/lib/providers/tanstack-provider";
@@ -35,8 +34,7 @@ export default function RootLayout({
 			>
 				<ProgressClientProvider>
 					<TanstackProvider>
-						<Header />
-						<main className="mx-auto mt-8 flex min-h-screen w-full max-w-4xl flex-1 flex-col px-4">
+						<main className="mx-auto flex min-h-screen w-full flex-1 flex-col">
 							{children}
 						</main>
 					</TanstackProvider>
