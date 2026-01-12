@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { signIn, useSession } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 
 export const Header = () => {
-	const { data: session } = useSession();
 	const onSignInClick = async () => {
 		const { data, error } = await signIn.social({
 			provider: "google",
@@ -17,20 +15,13 @@ export const Header = () => {
 	};
 
 	return (
-		<header className="flex h-16 w-full items-center border-b px-2 lg:px-10">
+		<header className="flex h-16 w-full items-center border-b px-4 lg:px-10">
 			<nav className="flex w-full items-center justify-between">
-				<span>Aeropack</span>
+				<span className="font-bold text-xl">AeroPack</span>
 				<div className="space-x-4">
-					{session?.user ? (
-						<span>Welcome, {session.user.name}</span>
-					) : (
-						<Button size="lg" onClick={onSignInClick}>
-							Sign In
-						</Button>
-					)}
-					<Link href="/signup" className="btn-primary">
-						Sign Up
-					</Link>
+					<Button size="lg" onClick={onSignInClick}>
+						Sign In
+					</Button>
 				</div>
 			</nav>
 		</header>

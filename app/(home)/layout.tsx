@@ -8,7 +8,9 @@ export default function HomeLayout({
 	return (
 		<section>
 			<Header />
-			{children}
+			<main className="mx-auto flex flex-col items-center justify-center px-4 pt-6 lg:pt-12">
+				{children}
+			</main>
 		</section>
 	);
 }
