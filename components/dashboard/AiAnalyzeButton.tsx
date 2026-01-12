@@ -45,7 +45,7 @@ export const AiAnalyzeButton = ({ packingList }: AiAnalyzeButtonProps) => {
 			disabled={itemsToEstimate.length === 0 || status === "pending"}
 			onClick={handleAIAnalysis}
 			size="lg"
-			className="group relative overflow-hidden bg-blue-600 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95"
+			className="group relative w-full bg-blue-600 transition-all hover:bg-blue-700 hover:shadow-lg md:w-auto"
 		>
 			<span className="flex items-center gap-2">
 				Analyze Packing List

@@ -4,12 +4,14 @@ import type * as React from "react";
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { AccountSection } from "./AccountSection";
 import { UserPackingLists } from "./dashboard/UserPackingLists";
 import { Badge } from "./ui/badge";
 
@@ -17,17 +19,6 @@ const data = {
 	navMain: [
 		{
 			title: "My trips",
-			url: "#",
-			items: [
-				{
-					title: "Installation",
-					url: "#",
-				},
-				{
-					title: "Project Structure",
-					url: "#",
-				},
-			],
 		},
 	],
 };
@@ -64,12 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 						{data.navMain.map((item) => (
 							<SidebarMenuItem key={item.title}>
 								<SidebarMenuButton
-									render={
-										<a href={item.url} className="font-medium">
-											{" "}
-											{item.title}
-										</a>
-									}
+									render={<span className="font-medium"> {item.title}</span>}
 								/>
 
 								<UserPackingLists />
@@ -78,6 +64,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter>
+				<AccountSection />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

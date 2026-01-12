@@ -37,7 +37,7 @@ export const Header = ({ trip }: HeaderProps) => {
 
 			<Card className="border-4 border-slate-200 shadow-md md:border-10">
 				<CardContent className="border-slate-100 md:p-4">
-					<div className="flex w-full items-end justify-between space-x-3">
+					<div className="flex w-full flex-col items-end justify-between md:flex-row md:space-x-3">
 						<Progress
 							className={`w-full pb-2 ${getWeightProgressColor(percentage)}`}
 							value={percentage}

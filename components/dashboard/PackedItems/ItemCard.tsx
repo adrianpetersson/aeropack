@@ -39,9 +39,9 @@ export const ItemCard = ({ item, isExpanded, onToggle }: ItemCardV2Props) => {
 						</data>
 						<data
 							value={item.quantity}
-							className="font-medium text-slate-400 text-tiny"
+							className="text-nowrap font-medium text-slate-400 text-tiny"
 						>
-							{item.quantity > 1 ? `Qty: ${item.quantity}` : "Single Item"}
+							{`Qty: ${item.quantity}`}
 						</data>
 					</div>
 					<button
