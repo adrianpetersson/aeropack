@@ -14,14 +14,7 @@ import {
 import { AccountSection } from "./AccountSection";
 import { UserPackingLists } from "./dashboard/UserPackingLists";
 import { Badge } from "./ui/badge";
-
-const data = {
-	navMain: [
-		{
-			title: "My trips",
-		},
-	],
-};
+import { Button } from "./ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
@@ -52,15 +45,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarMenu className="gap-2">
-						{data.navMain.map((item) => (
-							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton
-									render={<span className="font-medium"> {item.title}</span>}
-								/>
-
-								<UserPackingLists />
-							</SidebarMenuItem>
-						))}
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								render={
+									<div className="flex w-full items-center justify-between">
+										<span className="font-medium">My Trips</span>
+										<Button variant="ghost" size="sm">
+											+ New Trip
+										</Button>
+									</div>
+								}
+							/>
+							<UserPackingLists />
+						</SidebarMenuItem>
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>

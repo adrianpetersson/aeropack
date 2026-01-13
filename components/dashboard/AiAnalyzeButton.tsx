@@ -22,7 +22,8 @@ export const AiAnalyzeButton = ({ packingList }: AiAnalyzeButtonProps) => {
 
 	const { mutateAsync: estimateWeightsAsync, status } = useMutation({
 		mutationFn: estimateWeightsAction,
-		onSuccess: () => {
+		onSuccess: (result) => {
+			console.log("AI estimation result:", result);
 			queryClient.invalidateQueries({ queryKey: ["trip", packingList.id] });
 		},
 	});
