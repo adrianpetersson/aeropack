@@ -2,15 +2,23 @@
 
 import { startTransition, useState } from "react";
 import { createPackingListAction } from "@/actions/packing-lists";
+import { signIn, useSession } from "@/lib/auth-client";
 import { CreatePackingListInput } from "./create/CreatePackingListInput";
 
 export const HeroAction = () => {
 	const [tripName, setTripName] = useState("");
+	const { data: session } = useSession();
 
-	const handleCreateTrip = () => {
-		startTransition(async () => {
-			await createPackingListAction(tripName);
-		});
+	const handleCreateTrip = async () => {
+		if (!session?.user) {
+			await signIn.social({
+				provider: "google",
+				callbackURL: "/",
+				errorCallbackURL: "/error",
+			});
+			return;
+		}
+		startTransition(async () => await createPackingListAction(tripName));
 	};
 
 	return (

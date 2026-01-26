@@ -24,6 +24,10 @@ export const AiAnalyzeButton = ({ packingList }: AiAnalyzeButtonProps) => {
 		mutationFn: estimateWeightsAction,
 		onSuccess: (result) => {
 			console.log("AI estimation result:", result);
+			if (!result.success) {
+				toast.error(`AI estimation failed: ${result.error || "Unknown error"}`);
+				return;
+			}
 			queryClient.invalidateQueries({ queryKey: ["trip", packingList.id] });
 		},
 	});
