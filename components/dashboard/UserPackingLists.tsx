@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { getUserPackingListsAction } from "@/actions/packing-lists";
 import notFound from "@/app/not-found";
+import { useSession } from "@/lib/auth-client";
 import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
@@ -11,11 +12,16 @@ import {
 } from "../ui/sidebar";
 
 export const UserPackingLists = () => {
+	const { data: session } = useSession();
+
 	const { data: trips, isLoading } = useQuery({
 		queryKey: ["user-packing-lists"],
 		queryFn: () => getUserPackingListsAction(),
 		staleTime: 5 * 60 * 1000,
+		enabled: !!session?.user,
 	});
+
+	if (!session?.user) return null;
 
 	if (isLoading) {
 		return <p>Loading...</p>;

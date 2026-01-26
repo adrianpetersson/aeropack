@@ -14,12 +14,13 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { PackingListWithItems } from "@/db/types";
-import { signOut } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth-client";
 import { DeletePackingListDialog } from "./DeletePackingListDialog";
 
 export function TripSettings({ trip }: { trip: PackingListWithItems }) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const router = useRouter();
+	const { data: session } = useSession();
 
 	return (
 		<>
@@ -42,6 +43,7 @@ export function TripSettings({ trip }: { trip: PackingListWithItems }) {
 					</DropdownMenuGroup>
 					<DropdownMenuGroup>
 						<DropdownMenuItem
+							disabled={!session?.user}
 							onClick={() =>
 								signOut({
 									fetchOptions: {
@@ -56,6 +58,7 @@ export function TripSettings({ trip }: { trip: PackingListWithItems }) {
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
+							disabled={!session?.user}
 							onClick={() => setShowDeleteDialog(true)}
 							variant="destructive"
 						>
