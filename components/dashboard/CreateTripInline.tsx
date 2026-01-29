@@ -3,28 +3,17 @@
 import { AddFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { startTransition, useState } from "react";
-import { toast } from "sonner";
 import { createPackingListAction } from "@/actions/packing-lists";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const CreateTripInline = () => {
 	const [tripName, setTripName] = useState("");
-	const [isCreating, setIsCreating] = useState(false);
 
 	const handleCreateTrip = async () => {
 		if (tripName.trim().length === 0) return;
 
-		setIsCreating(true);
-		try {
-			startTransition(async () => {
-				await createPackingListAction(tripName);
-			});
-		} catch (error) {
-			console.error("Failed to create trip:", error);
-			toast.error("Failed to create trip");
-			setIsCreating(false);
-		}
+		startTransition(async () => await createPackingListAction(tripName));
 	};
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,12 +29,11 @@ export const CreateTripInline = () => {
 				value={tripName}
 				onChange={(e) => setTripName(e.target.value)}
 				onKeyDown={handleKeyDown}
-				disabled={isCreating}
 				className="text-sm"
 			/>
 			<Button
 				onClick={handleCreateTrip}
-				disabled={tripName.trim().length === 0 || isCreating}
+				disabled={tripName.trim().length === 0}
 				size="sm"
 				className="w-full"
 			>
