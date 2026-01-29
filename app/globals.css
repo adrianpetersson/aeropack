@@ -4,10 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
-
 @theme {
-  --color-brightOrange: #ff4f00;
+	--color-brightOrange: #ff4f00;
 }
 
 @theme inline {
