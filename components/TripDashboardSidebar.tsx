@@ -12,9 +12,9 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { AccountSection } from "./AccountSection";
+import { CreateTripInline } from "./dashboard/CreateTripInline";
 import { UserPackingLists } from "./dashboard/UserPackingLists";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
@@ -50,12 +50,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 								render={
 									<div className="flex w-full items-center justify-between">
 										<span className="font-medium">My Trips</span>
-										<Button variant="ghost" size="sm">
-											+ New Trip
-										</Button>
 									</div>
 								}
 							/>
+							<CreateTripInline />
 							<UserPackingLists />
 						</SidebarMenuItem>
 					</SidebarMenu>
