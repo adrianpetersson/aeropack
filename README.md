@@ -1,15 +1,17 @@
 # Aeropack ✈️
 
-A modern, AI-powered packing list manager for travelers who want to optimize their luggage weight and stay organized. Track items, get intelligent weight estimates, and never exceed airline weight limits again.
+A packing list web app focused on weight tracking, item organization, and fast data entry. This repository is a portfolio project built to demonstrate full‑stack app design, UI composition, and data modeling.
+
+![Dashboard](public/screenshots/dashboard.png)
 
 ## Features
 
-- 🤖 **AI Weight Estimation** - Automatically estimate item weights using Google's Gemini AI
-- 📊 **Real-time Weight Tracking** - Monitor your total pack weight vs. airline limits
-- 🎒 **Smart Categories** - Organize items by category with custom icons
-- ⚖️ **Worn Item Logic** - Toggle items as "worn" to exclude from weight calculations
-- 🔍 **Searchable Weight Library** - Global knowledge base of common travel item weights
-- 📱 **Responsive Design** - Works seamlessly on desktop and mobile devices
+- 🤖 **AI Weight Estimation** - Estimate item weights using Google's Gemini AI
+- 📊 **Weight Tracking** - Compare total pack weight against trip limits
+- 🎒 **Categories & Icons** - Organize items by category with custom icons
+- ⚖️ **Worn Item Toggle** - Exclude worn items from weight calculations
+- 🔍 **Searchable Weight Library** - Reusable list of common travel items and weights
+- 📱 **Responsive Design** - Works on desktop and mobile
 
 ## Tech Stack
 
@@ -27,63 +29,27 @@ A modern, AI-powered packing list manager for travelers who want to optimize the
 - **Drizzle Kit** - Database migrations and introspection
 
 ### AI & APIs
-- **Vercel AI SDK** - Unified interface for AI model interactions
-- **Google Gemini Flash** - Fast, cost-effective AI for weight estimation
+- **Vercel AI SDK** - Interface for AI model interactions
+- **Google Gemini Flash** - Model used for weight estimation
 
 ### Developer Experience
-- **Biome** - Fast, modern linting and formatting (ESLint + Prettier replacement)
-- **Lefthook** - Git hooks for code quality enforcement
-- **React Hook Form** - Performant form management with validation
+- **Biome** - Linting and formatting (ESLint + Prettier replacement)
+- **Lefthook** - Git hooks for code quality
+- **React Hook Form** - Form management with validation
 
-## Getting Started
+## Run Locally
 
-### Prerequisites
-
-- Node.js 20+ 
-- pnpm (recommended) or npm
-- Neon database account
-- Google AI API key
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/aeropack.git
-cd aeropack
-```
-
-2. Install dependencies:
 ```bash
 pnpm install
-```
-
-3. Set up environment variables:
-```bash
-cp .env.example .env.local
-```
-
-Add your environment variables:
-```env
-DATABASE_URL=your_neon_database_url
-GOOGLE_GENERATIVE_AI_API_KEY=your_google_ai_key
-```
-
-4. Run database migrations:
-```bash
 pnpm db:push
-```
-
-5. (Optional) Seed the database:
-```bash
-pnpm db:seed
-```
-
-6. Start the development server:
-```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Set environment variables in `.env.local`:
+```env
+DATABASE_URL=...
+GOOGLE_GENERATIVE_AI_API_KEY=...
+```
 
 ## Project Structure
 
@@ -101,13 +67,13 @@ aeropack/
 
 ## Database Schema
 
-The application uses three main tables:
+The app uses three main tables:
 
 - **weight_library** - Global repository of item weights
 - **packing_lists** - Trip containers with weight limits
 - **list_items** - Individual items within packing lists
 
-See [db/schema.ts](db/schema.ts) for the complete schema definition.
+See [db/schema.ts](db/schema.ts) for the schema definition.
 
 ## Scripts
 
@@ -121,12 +87,8 @@ pnpm db:seed          # Seed database with sample data
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+If you want to suggest improvements, open an issue or PR.
 
 ## License
 
-MIT License - feel free to use this project for personal or commercial purposes.
-
----
-
-Built with ❤️ using modern web technologies
+MIT License
